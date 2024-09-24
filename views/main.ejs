@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon Says Game</title>
+    <link rel="stylesheet" href="styletwo.css">
+    <link rel="icon" href="logo.png">
+</head>
+<body>
+    
+    <div class="upper-txt">
+        
+        <h1>Welcome, <%= query.username %>!</h1>
+        <h1>Simon Says Game</h1>
+        <h2>Press any key to start the Game</h2>
+
+    </div>
+    <div class="btn-container">
+        <div class="line-one">
+            <button class="btn red" id="red"></button>
+            <button class="btn yellow" id="yellow"></button>
+        </div>
+        <br>
+        <div class="line-two">
+            <button class="btn green" id="green"></button>
+            <button class="btn purple" id="purple"></button>
+        </div>
+    </div>
+    <button class="how-to-play-btn " id="howToPlayBtn">How to Play</button>
+<br>
+<br>
+<hr>
+
+
+
+    <button class="toggle-button" id="toggleButton" onclick="location.href='/leaderboard'" class="leaderboard-btn">View Leaderboard</button>
+    
+    <script>
+        const username = "<%= query.username %>";  // Get the username dynamically from the EJS template
+
+        function levelCompleted(currentLevel) {
+            console.log('Level completed, currentLevel:', currentLevel); // Log the currentLevel being sent
+
+            fetch('/update-level', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `username=${encodeURIComponent(username)}&currentLevel=${encodeURIComponent(currentLevel)}`
+            })
+            .then(response => response.text())
+            .then(() => {
+                console.log('Level updated successfully, redirecting to leaderboard');
+                window.location.href = '/leaderboard?username=' + encodeURIComponent(username);
+            })
+            .catch(error => {
+                console.error('Error updating level:', error);
+            });
+        }
+
+        let userSeq = [];
+        let gameSeq = [];
+        let h2 = document.querySelector("h2");
+        let btns = ["yellow", "red", "purple", "green"];
+        let started = false;
+        let level = 0;
+
+        document.addEventListener("click", function() {
+            if (!started) {
+                console.log("Game has started");
+                started = true;
+                level = 0;
+                gameSeq = [];
+                levelUp();
+            }
+        });
+
+        function btnFlash(btn) {
+            btn.classList.add("flash");
+            setTimeout(function() {
+                btn.classList.remove("flash");
+            }, 300);
+        }
+
+        function userFlash(btn) {
+            btn.classList.add("userflash");
+            setTimeout(function() {
+                btn.classList.remove("userflash");
+            }, 300);
+        }
+
+        function levelUp() {
+            userSeq = [];
+            level++;
+            h2.innerText = `Level ${level}`;
+
+            let rndm = Math.floor(Math.random() * 4);
+            let rndmColor = btns[rndm];
+            let rndmBtn = document.querySelector(`.${rndmColor}`);
+            gameSeq.push(rndmColor);
+            console.log("Game sequence:", gameSeq);
+            btnFlash(rndmBtn);
+        }
+
+        function check(idx) {
+            if (userSeq[idx] === gameSeq[idx]) {
+                if (userSeq.length === gameSeq.length) {
+                    setTimeout(levelUp, 1000);
+                }
+            } else {
+                h2.innerHTML = `Game over! Your score is <b>${level}</b> <br> Press any key to start`;
+
+                levelCompleted(level - 1);  
+
+                document.querySelector("body").style.backgroundColor = "red";
+                setTimeout(function() {
+                    document.querySelector("body").style.backgroundColor = "white";
+                }, 150);
+
+                reset(); 
+            }
+        }
+
+        function btnPress() {
+            let btn = this;
+
+            userFlash(btn);
+
+            let userColor = btn.getAttribute("id");
+            userSeq.push(userColor);
+            console.log("User sequence:", userSeq);
+
+            check(userSeq.length - 1);
+        }
+
+        let allBtns = document.querySelectorAll(".btn");
+        allBtns.forEach(btn => {
+            btn.addEventListener("click", btnPress);
+        });
+
+        function reset() {
+            started = false;
+            level = 0;
+            userSeq = [];
+            gameSeq = [];
+        }
+
+        document.getElementById("howToPlayBtn").addEventListener("click", function() {
+            alert("How to Play:\n1. Memorize the sequence of flashes.\n2. Click the buttons in the same order.\n3. Complete each level to progress!\n4. Game over if you miss the sequence.");
+        });
+    </script>
+</body>
+</html>

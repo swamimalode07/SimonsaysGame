@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon Says</title>
+    <style>
+        html, body {
+            overflow-x: hidden; 
+            margin: 0;
+            padding: 0; 
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #4a90e2;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #4a90e2;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            outline: none;
+            text-align: center;
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0px 0px 10px rgba(0, 191, 255, 0.6);
+        }
+
+        .play-btn {
+            padding: 12px 30px;
+            background-color: #e74c3c;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .play-btn:hover {
+            background-color: #357ab8;
+        }
+
+        .play-btn:active {
+            background-color: #005f8b;
+            box-shadow: none;
+        }
+
+        .ball {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.7;
+            z-index: 0;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px); }
+            100% { transform: translateY(100vh); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+                width: 90%;
+                max-width: 280px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            input[type="text"] {
+                font-size: 1em;
+            }
+
+            .play-btn {
+                font-size: 1em;
+                padding: 8px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Simon Says Game</h1>
+        <form action="/login" method="POST">
+            <input type="text" id="username" name="username" placeholder="Enter your username" required />
+            <br>
+            <button type="submit" class="play-btn">Play</button>
+        </form>
+        <footer>
+            <p>&copy; 2024 Simon Game. All rights reserved.</p>
+            <p>Game by <strong><a href="https://swamimalodeportfolio.vercel.app/">Swami Malode</a></strong></p>
+        </footer>
+    </div>
+
+    <script>
+        const colors = ['#e74c3c', '#f1c40f', '#2ecc71', '#fff', '#9b59b6'];
+
+        function createBall() {
+            const ball = document.createElement('div');
+            const size = Math.random() * 30 + 10;
+            ball.classList.add('ball');
+            ball.style.width = `${size}px`;
+            ball.style.height = `${size}px`;
+            ball.style.left = `${Math.random() * 100}vw`;
+            ball.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            ball.style.animation = `fall ${Math.random() * 2 + 3}s linear forwards`;
+            document.body.appendChild(ball);
+
+            ball.addEventListener('animationend', () => {
+                ball.remove();
+            });
+        }
+
+        setInterval(createBall, 150);
+    </script>
+
+</body>
+</html>
