@@ -4,28 +4,19 @@ const ejsMate = require("ejs-mate");
 const path = require("path");
 const mongoose = require('mongoose');
 require('dotenv').config(); 
-
-// Setting up EJS and views directory
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Serving static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 const port = process.env.PORT || 8080;
-
-// MongoDB connection using the Atlas connection string and environment variable for password
 const dbUrl = process.env.MONGODB_URI ;
-
-// Connect to MongoDB
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to the Database"))
     .catch(err => console.error("Could not connect to Database", err));
 
-// Schema and Model for users
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -36,10 +27,8 @@ const userSchema = new mongoose.Schema({
         default: 0 
     }
 });
-
 const User = mongoose.model('User', userSchema);
 
-// Routes
 app.get('/login', (req, res) => {
     res.render('login');  
 });
@@ -102,7 +91,6 @@ app.get('/leaderboard', (req, res) => {
         });
 });
 
-// Default route for redirecting all unmatched routes to login
 app.get("/*", (req, res) => {
     res.redirect("login");
 });
