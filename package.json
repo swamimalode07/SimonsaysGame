@@ -2,7 +2,7 @@
   "name": "yes",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app.cjs",
   "type": "module",
   "scripts": {
     "start": "node app.js",
