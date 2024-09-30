@@ -132,7 +132,14 @@
     </style>
 </head>
 <body>
-    <h1 class="nav">Leaderboard</h1>
+    <h1 class="nav">
+        <button onclick="location.href='/main'" 
+            class="how-to-play-btn btn" 
+            style="display: flex; align-items: center; justify-content: center; height: 40px; width: 200px; background-color: rgb(212, 155, 11); color: black; position: absolute; top: 10px; left: 10px; font-weight: bold; border-radius: 20px;">
+            Back to Game
+        </button>
+
+        Leaderboard</h1>
     <div class="users">
         <ul>
             <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
@@ -141,7 +148,7 @@
                 const color = colors[index % colors.length];
                 const isTopUser = user.username === topUser.username;
             %>
-            <li class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
+            <li class="<%= isTopUser ? 'top-user' : '' %>" "<%= !isTopUser ? 'background-color:' + color : '' %>">
                 <i class="fas fa-user"></i> 
                 <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
                 <% if (isTopUser) { %>
