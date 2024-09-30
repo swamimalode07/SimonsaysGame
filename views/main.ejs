@@ -28,14 +28,10 @@
             <button class="btn purple" id="purple"></button>
         </div>
     </div>
-    <button class="how-to-play-btn " id="howToPlayBtn">How to Play</button>
-<br>
-<br>
-<hr>
-
-
-
-    <button class="toggle-button" id="toggleButton" onclick="location.href='/leaderboard'" class="leaderboard-btn">View Leaderboard</button>
+    <div class="button-container">
+        <button class="how-to-play-btn" id="howToPlayBtn">How to Play</button>
+        <button class="toggle-button" id="toggleButton" onclick="location.href='/leaderboard'">View Leaderboard</button>
+    </div>
     
     <script>
         const username = "<%= query.username %>";  // Get the username dynamically from the EJS template
