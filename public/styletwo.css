@@ -142,32 +142,57 @@ body {
     }
 }
 
-.toggle-button {
-    position: fixed;
-    top: 32rem;
-    padding: 0.5rem 1rem;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 20px; 
+    position:sticky;
+    top: 15rem; 
+    margin: none;
 }
-.how-to-play-btn {
-    background-color: #ff5733;
-    color: white;
+
+.how-to-play-btn, .toggle-button {
+    padding: 15px 30px;
     font-size: 18px;
     font-weight: bold;
-    padding: 15px 30px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
-    margin-top: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.how-to-play-btn {
+    background-color: #ff5733;
+    color: white;
 }
 
 .how-to-play-btn:hover {
     background-color: #e74c3c;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
     transform: scale(1.05);
+}
+
+.toggle-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.toggle-button:hover {
+    background-color: #2980b9;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+}
+
+
+@media (max-width: 768px) {
+    .button-container {
+        top: 10rem;
+    }
+
+    .how-to-play-btn, .toggle-button {
+        width: 80%;
+        font-size: 16px;
+    }
 }
