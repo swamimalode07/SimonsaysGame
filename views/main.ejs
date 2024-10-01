@@ -37,7 +37,7 @@
         const username = "<%= query.username %>";  // Get the username dynamically from the EJS template
 
         function levelCompleted(currentLevel) {
-            console.log('Level completed, currentLevel:', currentLevel); // Log the currentLevel being sent
+            // console.log('Level completed, currentLevel:', currentLevel); // Log the currentLevel being sent
 
             fetch('/update-level', {
                 method: 'POST',
@@ -48,7 +48,7 @@
             })
             .then(response => response.text())
             .then(() => {
-                console.log('Level updated successfully, redirecting to leaderboard');
+                // console.log('Level updated successfully, redirecting to leaderboard');
                 window.location.href = '/leaderboard?username=' + encodeURIComponent(username);
             })
             .catch(error => {
@@ -65,7 +65,7 @@
 
         document.addEventListener("click", function() {
             if (!started) {
-                console.log("Game has started");
+                // console.log("Game has started");
                 started = true;
                 level = 0;
                 gameSeq = [];
@@ -96,7 +96,7 @@
             let rndmColor = btns[rndm];
             let rndmBtn = document.querySelector(`.${rndmColor}`);
             gameSeq.push(rndmColor);
-            console.log("Game sequence:", gameSeq);
+            // console.log("Game sequence:", gameSeq);
             btnFlash(rndmBtn);
         }
 
@@ -126,7 +126,7 @@
 
             let userColor = btn.getAttribute("id");
             userSeq.push(userColor);
-            console.log("User sequence:", userSeq);
+            // console.log("User sequence:", userSeq);
 
             check(userSeq.length - 1);
         }
