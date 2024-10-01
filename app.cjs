@@ -40,7 +40,15 @@ const userSchema = new mongoose.Schema({
 // Create a User model based on the schema
 const User = mongoose.model('User', userSchema);
 
-// Route to render the login page
+
+app.get('/test', (req, res) => {
+    res.send('backend working');
+});
+
+app.get('/mongotest', (req, res) => {
+    res.send(dbUrl);
+});
+
 app.get('/login', (req, res) => {
     res.render('login');  
 });

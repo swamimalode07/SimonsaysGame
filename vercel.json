@@ -1,19 +1,15 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "app.cjs",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "app.cjs"
-      }
-    ],
-    "env": {
-      "MONGODB_URI": "@mongodb_uri"
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.cjs",
+      "use": "@vercel/node"
     }
-  }
-  
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.cjs"
+    }
+  ]
+}
