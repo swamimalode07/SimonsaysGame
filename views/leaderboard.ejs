@@ -5,22 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="icon" href="/logo.png" type="image/png">
+    <link rel="icon" href="/logo.png" type="image/png">
 
     <style>
         html, body {
             overflow-x: hidden; 
             margin: 0;
             padding: 0; 
+            font-family: Arial, sans-serif;
         }
 
+        /* Navbar */
         .nav {
-            margin-top: 0;
+            margin: 0;
             position: fixed;
             width: 100%;
             top: 0;
             background-color: #4a90e2;
             text-align: center;
+            padding: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             z-index: 1000; 
         }
@@ -30,11 +33,11 @@
             font-weight: 700;
             color: #fff;
             margin: 0;
-            padding: 1rem;
         }
 
+        /* Users list */
         .users {
-            margin-top: 120px; 
+            margin-top: 50px; /* Ensure space between nav and content */
         }
 
         ul {
@@ -75,15 +78,7 @@
         }
 
         .top-user {
-            
-            background: linear-gradient(145deg, 
-                #fdd835, 
-                #fbc02d 20%, 
-                #ffeb3b 40%, 
-                #fbc02d 60%, 
-                #ff9800 80%, 
-                #f57c00 100% 
-            );
+            background: linear-gradient(145deg, #fdd835, #fbc02d 20%, #ffeb3b 40%, #fbc02d 60%, #ff9800 80%, #f57c00 100%);
             color: #000;
         }
 
@@ -96,6 +91,7 @@
             color: black;
         }
 
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -107,7 +103,7 @@
             }
 
             .users {
-                margin-top: 100px; 
+                margin-top: 30px;
             }
         }
 
@@ -126,30 +122,115 @@
             }
 
             .users {
-                margin-top: 90px; 
+                margin-top: 140px;
             }
+        }
+
+        /* Search Form */
+        .formcontainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 100px; /* Adjusted to ensure no overlap */
+            position:relative;
+            
+        }
+
+        .formcontainer input {
+            padding: 15px 20px 15px 50px; /* Space for the icon */
+            font-size: 1.3rem;
+            border-radius: 30px;
+            border: 2px solid #ddd;
+            width: 400px;
+            max-width: 90%;
+            outline: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .formcontainer i {
+            position: absolute;
+            left: 30px;
+            font-size: 1.5rem;
+            color: #999;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* No users found message */
+        .no-users {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.3rem;
+            color: #999;
         }
     </style>
 </head>
 <body>
+
+    <!-- Navbar -->
     <h1 class="nav">Leaderboard</h1>
+
+    <!-- Search Form -->
+    <form onsubmit="return false;" class="formcontainer">
+        
+        <input type="text" id="searchInput" placeholder="Search by username" oninput="filterUsers()">
+    </form>
+    
+    <!-- Users List -->
     <div class="users">
-        <ul>
-            <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
-            <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %>
-            <% users.forEach((user, index) => { 
-                const color = colors[index % colors.length];
-                const isTopUser = user.username === topUser.username;
-            %>
-            <li class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
-                <i class="fas fa-user"></i> 
-                <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
-                <% if (isTopUser) { %>
-                    <i class="fas fa-medal"></i>
-                <% } %>
-            </li>
-            <% }) %>
+        <ul id="userList">
+            <% if (users.length > 0) { %>
+                <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
+                <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %>
+                <% users.forEach((user, index) => { 
+                    const color = colors[index % colors.length];
+                    const isTopUser = user.username === topUser.username;
+                %>
+                <li class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
+                    <i class="fas fa-user"></i> 
+                    <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
+                    <% if (isTopUser) { %>
+                        <i class="fas fa-medal"></i>
+                    <% } %>
+                </li>
+                <% }) %>
+            <% } else { %>
+                <p>No users found.</p>
+            <% } %>
         </ul>
     </div>
+
+    <!-- No Results Message -->
+    <p id="noResults" class="no-users" style="display: none;">No user exists with this name.</p>
+
+    <script>
+        function filterUsers() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const userList = document.getElementById('userList');
+            const users = userList.getElementsByTagName('li');
+            let found = false;
+
+            for (let i = 0; i < users.length; i++) {
+                const user = users[i];
+                const username = user.getElementsByTagName('span')[0].textContent.toLowerCase();
+
+                if (username.includes(input)) {
+                    user.style.display = ""; // Show user
+                    found = true;
+                } else {
+                    user.style.display = "none"; // Hide user
+                }
+            }
+
+            // Show "No user exists with this name" message if no users match
+            const noResults = document.getElementById('noResults');
+            if (!found) {
+                noResults.style.display = "block";
+            } else {
+                noResults.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

@@ -4,6 +4,7 @@ const ejsMate = require("ejs-mate");
 const path = require("path");
 const mongoose = require('mongoose');
 require('dotenv').config(); 
+
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -11,8 +12,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 const port = process.env.PORT || 8080;
-const dbUrl = process.env.MONGODB_URI ;
+const dbUrl = process.env.MONGODB_URI;
 mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to the Database"))
     .catch(err => console.error("Could not connect to Database", err));
@@ -27,12 +29,15 @@ const userSchema = new mongoose.Schema({
         default: 0 
     }
 });
+
 const User = mongoose.model('User', userSchema);
 
+// Render the login page
 app.get('/login', (req, res) => {
-    res.render('login');  
+    res.render('login');
 });
 
+// Handle login
 app.post('/login', (req, res) => {
     const username = req.body.username;
     User.findOne({ username })
@@ -44,14 +49,15 @@ app.post('/login', (req, res) => {
             return user;
         })
         .then(() => {
-            res.redirect('/main?username=' + encodeURIComponent(username));  
+            res.redirect('/main?username=' + encodeURIComponent(username));
         })
         .catch(err => res.status(400).send("Error handling login."));
 });
 
+// Update level
 app.post('/update-level', (req, res) => {
     const username = req.body.username;
-    const currentLevel = parseInt(req.body.currentLevel, 10); 
+    const currentLevel = parseInt(req.body.currentLevel, 10);
 
     if (isNaN(currentLevel)) {
         return res.status(400).send("Invalid level provided.");
@@ -72,25 +78,42 @@ app.post('/update-level', (req, res) => {
                 res.status(200).send("No update needed.");
             }
         })
-        .catch(err => {
-            res.status(500).send("Error updating max level.");
-        });
+        .catch(err => res.status(500).send("Error updating max level."));
 });
 
+// Render the main page
 app.get('/main', (req, res) => {
     res.render('main', { query: req.query });
 });
 
+// Render the leaderboard
+// Render the leaderboard
 app.get('/leaderboard', (req, res) => {
     User.find().sort({ maxLevel: -1 })
         .then(users => {
             res.render('leaderboard', { users, username: req.query.username });
+        })
+        .catch(err => res.status(500).send("Error retrieving leaderboard."));
+});
+
+
+
+// Search leaderboard by username
+app.get('/leaderboard/search', (req, res) => {
+    const searchTerm = req.query.username;
+    User.find({ username: new RegExp(searchTerm, 'i') })
+        .sort({ maxLevel: -1 })
+        .then(users => {
+            res.render('leaderboard', { users, username: searchTerm });
         })
         .catch(err => {
             res.status(500).send("Error retrieving leaderboard.");
         });
 });
 
+
+
+// Catch all other routes
 app.get("/*", (req, res) => {
     res.redirect("login");
 });
