@@ -156,31 +156,37 @@
     <div class="leaderboard">
         <!-- Top 3 Users -->
         <div class="top-3">
-            <% const top3Users = users.slice(0, 3); %>
-            <div class="top-user third">
-                <i class="fas fa-user"></i>
-                <span><%= top3Users[2].username %></span>
-                <span>Lvl <%= top3Users[2].maxLevel %></span>
-                <i class="fas fa-medal"></i>
-            </div>
-            <div class="top-user first">
-                <i class="fas fa-user"></i>
-                <span><%= top3Users[0].username %></span>
-                <span>Lvl <%= top3Users[0].maxLevel %></span>
-                <i class="fas fa-medal"></i>
-            </div>
-            <div class="top-user second">
-                <i class="fas fa-user"></i>
-                <span><%= top3Users[1].username %></span>
-                <span>Lvl <%= top3Users[1].maxLevel %></span>
-                <i class="fas fa-medal"></i>
-            </div>
+            <% const top3Users = users.slice(0, 3).filter(user => user.username); %>
+            <% if (top3Users.length > 2) { %>
+                <div class="top-user third">
+                    <i class="fas fa-user"></i>
+                    <span><%= top3Users[2].username %></span>
+                    <span>Lvl <%= top3Users[2].maxLevel %></span>
+                    <i class="fas fa-medal"></i>
+                </div>
+            <% } %>
+            <% if (top3Users.length > 0) { %>
+                <div class="top-user first">
+                    <i class="fas fa-user"></i>
+                    <span><%= top3Users[0].username %></span>
+                    <span>Lvl <%= top3Users[0].maxLevel %></span>
+                    <i class="fas fa-medal"></i>
+                </div>
+            <% } %>
+            <% if (top3Users.length > 1) { %>
+                <div class="top-user second">
+                    <i class="fas fa-user"></i>
+                    <span><%= top3Users[1].username %></span>
+                    <span>Lvl <%= top3Users[1].maxLevel %></span>
+                    <i class="fas fa-medal"></i>
+                </div>
+            <% } %>
         </div>
 
         <!-- Remaining Users -->
         <div class="user-list">
             <ul>
-                <% const remainingUsers = users.slice(3); %>
+                <% const remainingUsers = users.slice(3).filter(user => user.username); %>
                 <% remainingUsers.forEach(user => { %>
                     <li>
                         <i class="fas fa-user"></i>
