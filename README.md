@@ -54,3 +54,7 @@ npm install
 4. Set up environment variables
 
 Create a .env file with your MongoDB credentials
+```
+MONGODB_URI=mongodb://<host>:<port>/<database_name>
+PORT=<serverport>[default=8080]
+```

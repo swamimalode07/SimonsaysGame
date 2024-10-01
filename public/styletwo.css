@@ -143,8 +143,7 @@ body {
 }
 
 .toggle-button {
-    position: fixed;
-    top: 32rem;
+    margin: 1.5rem 0;
     padding: 0.5rem 1rem;
     background-color: #3498db;
     color: #fff;
