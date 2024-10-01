@@ -29,6 +29,15 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', userSchema);
 
+
+app.get('/test', (req, res) => {
+    res.send('backend working');
+});
+
+app.get('/mongotest', (req, res) => {
+    res.send(dbUrl);
+});
+
 app.get('/login', (req, res) => {
     res.render('login');  
 });
