@@ -5,158 +5,191 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="icon" href="/logo.png" type="image/png">
+    <link rel="icon" href="/logo.png" type="image/png">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         html, body {
-            overflow-x: hidden; 
             margin: 0;
-            padding: 0; 
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            height: 100%;
         }
 
         .nav {
-            margin-top: 0;
-            position: fixed;
+            position: absolute;
             width: 100%;
             top: 0;
             background-color: #4a90e2;
+            color: white;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000; 
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #fff;
-            margin: 0;
+        .nav button {
+            background-color: #f1c40f;
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+        }
+
+        .leaderboard {
+            margin-top: 120px;
+            text-align: center;
+        }
+
+        .top-3 {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .top-user {
+            background-color: #ffeb3b;
+            border-radius: 10px;
             padding: 1rem;
+            width: 150px;
+            margin: 0 1rem;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
-        .users {
-            margin-top: 120px; 
+        .top-user i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
+        .first {
+            height: 200px;
+            background-color: #f39c12;
+            font-weight: bold;
+        }
+
+        .second {
+            height: 170px;
+            background-color: #bdc3c7;
+        }
+
+        .third {
+            height: 150px;
+            background-color: #cd7f32;
+        }
+
+        .top-user span {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .fa-medal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+        }
+
+        .user-list {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        li {
-            width: 80%;
-            max-width: 500px;
-            color: #fff;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
+        .user-list ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .user-list li {
+            background-color: white;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            width: 300px;
             border-radius: 10px;
-            font-size: 1.5rem;
+            border: 1px solid #ddd;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        li:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        li span {
-            font-weight: bold;
-        }
-
-        li i {
+        .user-list li i {
             margin-right: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .top-user {
-            
-            background: linear-gradient(145deg, 
-                #fdd835, 
-                #fbc02d 20%, 
-                #ffeb3b 40%, 
-                #fbc02d 60%, 
-                #ff9800 80%, 
-                #f57c00 100% 
-            );
-            color: #000;
-        }
-
-        .top-user i {
-            color: #000;
-        }
-
-        .top-user .fa-medal {
-            margin-left: 10px;
-            color: black;
         }
 
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
+            .top-user {
+                width: 100px;
             }
 
-            li {
-                font-size: 1.2rem;
-                padding: 1rem;
+            .top-user i {
+                font-size: 1.5rem;
             }
 
-            .users {
-                margin-top: 100px; 
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-
-            li {
-                font-size: 1rem;
-                padding: 0.8rem;
-            }
-
-            li i {
-                font-size: 1.2rem;
-            }
-
-            .users {
-                margin-top: 90px; 
+            .user-list li {
+                width: 80%;
             }
         }
     </style>
 </head>
 <body>
     <h1 class="nav">
-        <button onclick="location.href='/main'" 
-            class="how-to-play-btn btn" 
-            style="display: flex; align-items: center; justify-content: center; height: 40px; width: 200px; background-color: rgb(212, 155, 11); color: black; position: absolute; top: 10px; left: 10px; font-weight: bold; border-radius: 20px;">
+        <button onclick="location.href='/main'">
             Back to Game
         </button>
+        Leaderboard
+    </h1>
 
-        Leaderboard</h1>
-    <div class="users">
-        <ul>
-            <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
-            <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %>
-            <% users.forEach((user, index) => { 
-                const color = colors[index % colors.length];
-                const isTopUser = user.username === topUser.username;
-            %>
-            <li class="<%= isTopUser ? 'top-user' : '' %>" "<%= !isTopUser ? 'background-color:' + color : '' %>">
-                <i class="fas fa-user"></i> 
-                <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
-                <% if (isTopUser) { %>
-                    <i class="fas fa-medal"></i>
-                <% } %>
-            </li>
-            <% }) %>
-        </ul>
+    <div class="leaderboard">
+        <!-- Top 3 Users -->
+        <div class="top-3">
+            <% const top3Users = users.slice(0, 3); %>
+            <div class="top-user third">
+                <i class="fas fa-user"></i>
+                <span><%= top3Users[2].username %></span>
+                <span>Lvl <%= top3Users[2].maxLevel %></span>
+                <i class="fas fa-medal"></i>
+            </div>
+            <div class="top-user first">
+                <i class="fas fa-user"></i>
+                <span><%= top3Users[0].username %></span>
+                <span>Lvl <%= top3Users[0].maxLevel %></span>
+                <i class="fas fa-medal"></i>
+            </div>
+            <div class="top-user second">
+                <i class="fas fa-user"></i>
+                <span><%= top3Users[1].username %></span>
+                <span>Lvl <%= top3Users[1].maxLevel %></span>
+                <i class="fas fa-medal"></i>
+            </div>
+        </div>
+
+        <!-- Remaining Users -->
+        <div class="user-list">
+            <ul>
+                <% const remainingUsers = users.slice(3); %>
+                <% remainingUsers.forEach(user => { %>
+                    <li>
+                        <i class="fas fa-user"></i>
+                        <span><%= user.username %></span>
+                        <span>Lvl <%= user.maxLevel %></span>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
     </div>
 </body>
 </html>
