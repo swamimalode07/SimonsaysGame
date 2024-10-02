@@ -95,128 +95,140 @@
             color: black;
         }
 
-        /* Pagination styles */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
+        /* Back to top button */
+        #btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none; /* Initially hidden */
+    width: 60px;  
+    height: 60px; 
+    border-radius: 50%; 
+    background-color: #4a90e2; 
+    color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    border: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.5s; /* Added transform for smooth effect */
+}
+
+/* Arrow animation */
+@keyframes moveUp {
+    0% {
+        transform: translateY(20px); /* Start below */
+        opacity: 0; /* Start invisible */
+    }
+    100% {
+        transform: translateY(0); /* Move to original position */
+        opacity: 1; /* Fully visible */
+    }
+}
+
+/* Show the button with animation */
+#btn-back-to-top.show {
+    display: block; /* Change display to block when class is added */
+    animation: moveUp 0.5s ease-out forwards; /* Animation for appearing */
+}
+
+#btn-back-to-top:hover {
+    background-color: #4a90e2; 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); 
+    transform: scale(1.1); /* Scale up slightly on hover for effect */
+}
+
+#btn-back-to-top i {
+    font-size: 24px; 
+}
+
+
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            li {
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
+
+            .users {
+                margin-top: 100px; 
+            }
         }
 
-        .pagination a {
-            color: #3498db;
-            padding: 8px 16px;
-            text-decoration: none;
-            border: 1px solid #3498db;
-            margin: 0 5px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
 
-        .pagination a.active {
-            background-color: #3498db;
-            color: white;
-        }
+            li {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
 
-        .pagination a:hover {
-            background-color: #2980b9;
-            color: white;
+            li i {
+                font-size: 1.2rem;
+            }
+
+            .users {
+                margin-top: 90px; 
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Back to top button -->
+    <button type="button" class="btn btn-floating btn-lg" id="btn-back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <h1 class="nav">Leaderboard</h1>
     <div class="users">
-        <ul id="user-list">
-            <% if (users.length === 0) { %>
-                <li>No users available</li>
-            <% } else { %>
-                <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
-                <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %>
-                <% users.forEach((user, index) => { 
-                    const color = colors[index % colors.length];
-                    const isTopUser = user.username === topUser.username;
-                %>
-                <li class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
-                    <i class="fas fa-user"></i> 
-                    <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
-                    <% if (isTopUser) { %>
-                        <i class="fas fa-medal"></i>
-                    <% } %>
-                </li>
-                <% }); %>
-            <% } %>
+        <ul>
+            <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
+            <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %>
+            <% users.forEach((user, index) => { 
+                const color = colors[index % colors.length];
+                const isTopUser = user.username === topUser.username;
+            %>
+            <li class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
+                <i class="fas fa-user"></i> 
+                <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
+                <% if (isTopUser) { %>
+                    <i class="fas fa-medal"></i>
+                <% } %>
+            </li>
+            <% }); %>
         </ul>
     </div>
 
-    <div class="pagination" id="pagination-controls"></div>
-
     <script>
-        const users = <%- JSON.stringify(users) %>; // Pass users from the backend to the frontend
-        const limit = 5; // Number of users per page
-        let currentPage = 1;
+        // Get the button
+        // Get the button
+let mybutton = document.getElementById("btn-back-to-top");
 
-        function renderUsers(page) {
-            const startIndex = (page - 1) * limit;
-            const endIndex = Math.min(page * limit, users.length);
-            const paginatedUsers = users.slice(startIndex, endIndex);
-            const userList = document.getElementById('user-list');
-            userList.innerHTML = '';
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function () {
+    scrollFunction();
+};
 
-            // No users found for this page
-            if (paginatedUsers.length === 0) {
-                userList.innerHTML = '<li>No users available</li>';
-                return;
-            }
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.classList.add("show"); // Add the class to show the button with animation
+    } else {
+        mybutton.classList.remove("show"); // Remove the class to hide the button
+    }
+}
 
-            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143'];
-            let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev);
+// When the user clicks on the button, scroll to the top of the document
+mybutton.addEventListener("click", backToTop);
 
-            paginatedUsers.forEach((user, index) => {
-                const color = colors[(startIndex + index) % colors.length];
-                const isTopUser = user.username === topUser.username;
+function backToTop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+}
 
-                const listItem = document.createElement('li');
-                listItem.className = isTopUser ? 'top-user' : '';
-                listItem.style.backgroundColor = !isTopUser ? color : '';
-                listItem.innerHTML = `<i class="fas fa-user"></i> 
-                                      <span>${user.username}</span> - Highest Level: <span>${user.maxLevel}</span>`;
-                if (isTopUser) {
-                    listItem.innerHTML += `<i class="fas fa-medal"></i>`;
-                }
-                userList.appendChild(listItem);
-            });
-        }
-
-        function renderPagination() {
-            const totalPages = Math.ceil(users.length / limit);
-            const paginationControls = document.getElementById('pagination-controls');
-            paginationControls.innerHTML = '';
-
-            // Previous button
-            if (currentPage > 1) {
-                paginationControls.innerHTML += `<a href="#" onclick="changePage(${currentPage - 1})">Previous</a>`;
-            }
-
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                paginationControls.innerHTML += `<a href="#" class="${currentPage === i ? 'active' : ''}" onclick="changePage(${i})">${i}</a>`;
-            }
-
-            // Next button
-            if (currentPage < totalPages) {
-                paginationControls.innerHTML += `<a href="#" onclick="changePage(${currentPage + 1})">Next</a>`;
-            }
-        }
-
-        function changePage(page) {
-            currentPage = page;
-            renderUsers(currentPage);
-            renderPagination();
-        }
-
-        // Initial render
-        renderUsers(currentPage);
-        renderPagination();
     </script>
 </body>
 </html>
