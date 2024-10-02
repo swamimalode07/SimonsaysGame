@@ -215,7 +215,7 @@
     <nav class="nav">
         <div class="nav-content">
             <h1><%= currentUser.username %>s' Leaderboard</h1>
-            <% const url = 'main?username=' + encodeURIComponent(username); %>
+            <% const url = 'main?username=' + encodeURIComponent(currentUser.username); %>
             <button class="play-again-btn" id="playAgainBtn" onclick="window.location.href='<%= url %>'">Play again</button>
         </div>
     </nav>    
