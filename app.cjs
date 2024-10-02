@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 const ejsMate = require("ejs-mate");
 const path = require("path");
-const mongoose = require('mongoose');
+const User = require("./Models/userModel.cjs");
+const authRoutes = require("./routes/auth-routes.cjs");
+const mongoose = require("./config/mongoose.cjs");
 
-require('dotenv').config();
+require('dotenv').config(); // Load environment variables from .env file
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
@@ -18,38 +20,6 @@ app.use(express.json());
 // Set up port and database URL from environment variables
 const port = process.env.PORT || 8080;
 const dbUrl = process.env.MONGODB_URI;
-
-// Connect to the MongoDB database
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("Connected to the Database"))
-    .catch(err => console.error("Could not connect to Database", err));
-
-// Define the user schema
-const userSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true
-    },
-    maxLevel: {
-        type: Number,
-        default: 0
-    }
-});
-
-const User = mongoose.model('User', userSchema);
-
-// Test route
-app.get('/test', (req, res) => {
-    res.send('Backend working');
-});
-
-app.get('/mongotest', (req, res) => {
-    res.send(dbUrl);
-});
-
-app.get('/login', (req, res) => {
-    res.render('login');
-});
 
 // Handle user login
 app.post('/login', (req, res) => {
@@ -120,6 +90,9 @@ app.get('/leaderboard/search', (req, res) => {
         })
         .catch(err => res.status(500).send("Error retrieving leaderboard."));
 });
+
+// Use the auth routes
+app.use('/', authRoutes);
 
 // Redirect all other routes to login page
 app.get("/*", (req, res) => {
