@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="/logo.png" type="image/png">
+
+    <style>
+        html, body {
+            overflow-x: hidden; 
+            margin: 0;
+            padding: 0; 
+        }
+
+        .nav {
+            margin-top: 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background-color: #4a90e2;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000; 
+        }
+
+        .nav-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            gap: 16px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
+
+        .users {
+            margin-top: 160px; 
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        li {
+            width: 80%;
+            max-width: 500px;
+            color: #fff;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        li span {
+            font-weight: bold;
+        }
+
+        li i {
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .top-user {
+            background: linear-gradient(145deg, 
+                #fdd835, 
+                #fbc02d 20%, 
+                #ffeb3b 40%, 
+                #fbc02d 60%, 
+                #ff9800 80%, 
+                #f57c00 100% 
+            );
+            color: #000;
+        }
+
+        .top-user i {
+            color: #000;
+        }
+
+        .top-user .fa-medal {
+            margin-left: 10px;
+            color: black;
+        }
+
+        .play-again-btn {
+            width: fit-content;
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            right: 1rem;
+        }
+        
+        .play-again-btn:hover {
+            background-color: #fff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transform: scale(1.05);
+            transition: transform 0.2s ease-in-out; 
+        }
+
+        /* Back to top button */
+        #btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none; /* Initially hidden */
+    width: 60px;  
+    height: 60px; 
+    border-radius: 50%; 
+    background-color: #4a90e2; 
+    color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    border: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.5s; /* Added transform for smooth effect */
+}
+
+/* Arrow animation */
+@keyframes moveUp {
+    0% {
+        transform: translateY(20px); /* Start below */
+        opacity: 0; /* Start invisible */
+    }
+    100% {
+        transform: translateY(0); /* Move to original position */
+        opacity: 1; /* Fully visible */
+    }
+}
+
+/* Show the button with animation */
+#btn-back-to-top.show {
+    display: block; /* Change display to block when class is added */
+    animation: moveUp 0.5s ease-out forwards; /* Animation for appearing */
+}
+
+#btn-back-to-top:hover {
+    background-color: #4a90e2; 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); 
+    transform: scale(1.1); /* Scale up slightly on hover for effect */
+}
+
+#btn-back-to-top i {
+    font-size: 24px; 
+}
+
+
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            li {
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
+
+            .users {
+                margin-top: 138px; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            li {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+
+            li i {
+                font-size: 1.2rem;
+            }
+
+            .users {
+                margin-top: 135px; 
+            }
+
+            .nav-content {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to top button -->
+    <button type="button" class="btn btn-floating btn-lg" id="btn-back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <nav class="nav">
+        <div class="nav-content">
+            <h1><%= currentUser.username %>s' Leaderboard</h1>
+            <% const url = 'main?username=' + encodeURIComponent(username); %>
+            <button class="play-again-btn" id="playAgainBtn" onclick="window.location.href='<%= url %>'">Play again</button>
+        </div>
+    </nav>    
+        <div class="users">
+            <ul>
+                <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
+                <% currentUser.results.slice().reverse().forEach((result, index) => { 
+                    const color = colors[index % colors.length];
+                    const isTopScore = result.score === currentUser.maxLevel;
+                %>
+                <li class="<%= isTopScore ? 'top-user' : '' %>" style="background-color: <%= !isTopScore ? color : '' %>;">
+                    <i class="fas fa-user"></i> 
+                    Score: <span><%= result.score%></span>
+                    <% if (isTopScore) { %>
+                        <i class="fas fa-medal"></i>
+                    <% } %>
+                </li>
+                <% }); %>
+            </ul>
+        </div>
+
+    <script>
+        // Get the button
+        // Get the button
+let mybutton = document.getElementById("btn-back-to-top");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function () {
+    scrollFunction();
+};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.classList.add("show"); // Add the class to show the button with animation
+    } else {
+        mybutton.classList.remove("show"); // Remove the class to hide the button
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+mybutton.addEventListener("click", backToTop);
+
+function backToTop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+}
+
+    </script>
+</body>
+</html>

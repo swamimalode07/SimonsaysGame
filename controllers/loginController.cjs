@@ -40,7 +40,9 @@ const updateLevel =  (req, res) => {
                 });
             } else {
                 user.results.push({ score: currentLevel });
-                res.status(200).send("No update needed.");
+                return user.save().then(() => {
+                    res.status(200).send("Max level updated successfully!");
+                });
             }
         })
         .catch(err => {
@@ -63,5 +65,19 @@ const leaderboard = (req, res) => {
         });
 }
 
+const userLeaderboard = (req, res) => {
+    User.findOne({ username: req.query.user })
+        .then(currentUser => {
+            if (!currentUser) {
+                console.log(currentUser);
+                return res.status(404).send("User not found.");
+            }
+            res.render('userLeaderboard', { currentUser, username: req.query.username });
+        })
+        .catch(err => {
+            res.status(500).send("Error retrieving leaderboard.");
+        });
+}
 
-module.exports = { login, updateLevel, main, leaderboard };
+
+module.exports = { login, updateLevel, main, leaderboard, userLeaderboard };
