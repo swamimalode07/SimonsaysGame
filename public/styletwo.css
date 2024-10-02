@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
+
 html,
 body {
   overflow-x: hidden;
@@ -32,10 +34,10 @@ body {
 }
 
 .upper-txt h1 {
-  font-family: "Bangers", cursive;
+  font-family: "Montserrat", sans-serif;
   margin: 0;
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.3;
 }
 
