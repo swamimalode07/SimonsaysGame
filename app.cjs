@@ -23,15 +23,20 @@ app.use(express.json()); // Parse JSON data
 const port = process.env.PORT || 8080;
 const dbUrl = process.env.MONGODB_URI;
 
+// Routes
+app.get('/', (req, res) => {
+    res.redirect('/login');  // Redirect to login page from root URL
+});
 
 app.get('/login', (req, res) => {
     res.render('login');  
 });
 
-app.use('/',authRoutes);
+app.use('/', authRoutes);
 
-app.get("/*", (req, res) => {
-    res.redirect("login");
+// Error handling for 404 (Page Not Found) for undefined routes
+app.use((req, res, next) => {
+    res.status(404).render('error', { errorStatus: 404, errorMessage: 'Page Not Found' });
 });
 
 // Start the server
