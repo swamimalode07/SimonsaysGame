@@ -4,12 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leaderboard</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link rel="icon" href="/logo.png" type="image/png" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="/logo.png" type="image/png">
     <style>
       html,
       body {
@@ -135,30 +131,103 @@
           margin-top: 90px;
         }
       }
+
+      /* Back to top button */
+      #btn-back-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none; /* Initially hidden */
+        width: 60px;  
+        height: 60px; 
+        border-radius: 50%; 
+        background-color: #4a90e2; 
+        color: white; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+        border: none; 
+        cursor: pointer; 
+        transition: background-color 0.3s, box-shadow 0.3s, transform 0.5s; /* Added transform for smooth effect */
+      }
+
+      /* Arrow animation */
+      @keyframes moveUp {
+        0% {
+          transform: translateY(20px); /* Start below */
+          opacity: 0; /* Start invisible */
+        }
+        100% {
+          transform: translateY(0); /* Move to original position */
+          opacity: 1; /* Fully visible */
+        }
+      }
+
+      /* Show the button with animation */
+      #btn-back-to-top.show {
+        display: block; /* Change display to block when class is added */
+        animation: moveUp 0.5s ease-out forwards; /* Animation for appearing */
+      }
+
+      #btn-back-to-top:hover {
+        background-color: #4a90e2; 
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); 
+        transform: scale(1.1); /* Scale up slightly on hover for effect */
+      }
+
+      #btn-back-to-top i {
+        font-size: 24px; 
+      }
     </style>
   </head>
   <body>
+    <!-- Back to top button -->
+    <button type="button" class="btn btn-floating btn-lg" id="btn-back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <h1 class="nav">Leaderboard</h1>
     <div class="users">
       <ul>
-        <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %> <%
-        let topUser = users.reduce((prev, current) => (current.maxLevel >
-        prev.maxLevel) ? current : prev); %> <% users.forEach((user, index) => {
-        const color = colors[index % colors.length]; const isTopUser =
-        user.username === topUser.username; %>
-        <li
-          class="<%= isTopUser ? 'top-user' : '' %>"
-          style="background-color: <%= !isTopUser ? color : '' %>;"
-        >
+        <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %> 
+        <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %> 
+        <% users.forEach((user, index) => { 
+            const color = colors[index % colors.length]; 
+            const isTopUser = user.username === topUser.username; 
+        %>
+        <li class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
           <i class="fas fa-user"></i>
-          <span><%= user.username %></span> - Highest Level:
-          <span><%= user.maxLevel %></span>
+          <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
           <% if (isTopUser) { %>
-          <i class="fas fa-medal"></i>
+            <i class="fas fa-medal"></i>
           <% } %>
         </li>
-        <% }) %>
+        <% }); %>
       </ul>
     </div>
+
+    <script>
+      // Get the button
+      let mybutton = document.getElementById("btn-back-to-top");
+
+      // When the user scrolls down 20px from the top of the document, show the button
+      window.onscroll = function () {
+          scrollFunction();
+      };
+
+      function scrollFunction() {
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+              mybutton.classList.add("show"); // Add the class to show the button with animation
+          } else {
+              mybutton.classList.remove("show"); // Remove the class to hide the button
+          }
+      }
+
+      // When the user clicks on the button, scroll to the top of the document
+      mybutton.addEventListener("click", backToTop);
+
+      function backToTop() {
+          document.body.scrollTop = 0; // For Safari
+          document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+      }
+    </script>
   </body>
 </html>
