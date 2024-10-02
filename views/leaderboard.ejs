@@ -20,9 +20,17 @@
             width: 100%;
             top: 0;
             background-color: #4a90e2;
-            text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             z-index: 1000; 
+        }
+
+        .nav-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            gap: 16px;
         }
 
         h1 {
@@ -30,11 +38,10 @@
             font-weight: 700;
             color: #fff;
             margin: 0;
-            padding: 1rem;
         }
 
         .users {
-            margin-top: 120px; 
+            margin-top: 160px; 
         }
 
         ul {
@@ -95,6 +102,24 @@
             color: black;
         }
 
+        .play-again-btn {
+            width: fit-content;
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            right: 1rem;
+        }
+        
+        .play-again-btn:hover {
+            background-color: #fff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transform: scale(1.05);
+            transition: transform 0.2s ease-in-out; 
+        }
+
         /* Back to top button */
         #btn-back-to-top {
     position: fixed;
@@ -153,7 +178,7 @@
             }
 
             .users {
-                margin-top: 100px; 
+                margin-top: 138px; 
             }
         }
 
@@ -172,7 +197,11 @@
             }
 
             .users {
-                margin-top: 90px; 
+                margin-top: 135px; 
+            }
+
+            .nav-content {
+                gap: 10px;
             }
         }
     </style>
@@ -183,7 +212,13 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <h1 class="nav">Leaderboard</h1>
+    <nav class="nav">
+        <div class="nav-content">
+            <h1>Leaderboard</h1>
+            <% const url = 'main?username=' + encodeURIComponent(username); %>
+            <button class="play-again-btn" id="playAgainBtn" onclick="window.location.href='<%= url %>'">Play again</button>
+        </div>
+    </nav>    
     <div class="users">
         <ul>
             <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>

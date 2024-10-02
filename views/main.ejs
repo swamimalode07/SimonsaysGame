@@ -30,11 +30,12 @@
     </div>
     <div class="button-container">
         <button class="how-to-play-btn" id="howToPlayBtn">How to Play</button>
-        <button class="toggle-button" id="toggleButton" onclick="location.href='/leaderboard'">View Leaderboard</button>
+        <button class="toggle-button" id="leaderboardBtn">View Leaderboard</button>
     </div>
     
     <script>
         const username = "<%= query.username %>";  // Get the username dynamically from the EJS template
+        const url = '/leaderboard?username=' + encodeURIComponent(username);
 
         function levelCompleted(currentLevel) {
             // console.log('Level completed, currentLevel:', currentLevel); // Log the currentLevel being sent
@@ -49,7 +50,7 @@
             .then(response => response.text())
             .then(() => {
                 // console.log('Level updated successfully, redirecting to leaderboard');
-                window.location.href = '/leaderboard?username=' + encodeURIComponent(username);
+                window.location.href = url;
             })
             .catch(error => {
                 console.error('Error updating level:', error);
@@ -71,6 +72,10 @@
                 gameSeq = [];
                 levelUp();
             }
+        });
+
+        document.getElementById("leaderboardBtn").addEventListener("click", function() {
+            location.href = url
         });
 
         function btnFlash(btn) {
