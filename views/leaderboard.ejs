@@ -192,7 +192,7 @@
                 const color = colors[index % colors.length];
                 const isTopUser = user.username === topUser.username;
             %>
-            <li class="<%= isTopUser ? 'top-user' : '' %>" <%= !isTopUser ? 'style="background-color:' + color + ';"' : '' %>>
+            <li class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
                 <i class="fas fa-user"></i> 
                 <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
                 <% if (isTopUser) { %>
