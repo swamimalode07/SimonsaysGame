@@ -188,25 +188,34 @@
         }
 
         function renderPagination() {
-            const totalPages = Math.ceil(users.length / limit);
-            const paginationControls = document.getElementById('pagination-controls');
-            paginationControls.innerHTML = '';
+    const totalPages = Math.ceil(users.length / limit);
+    const paginationControls = document.getElementById('pagination-controls');
+    paginationControls.innerHTML = '';
 
-            // Previous button
-            if (currentPage > 1) {
-                paginationControls.innerHTML += `<a href="#" onclick="changePage(${currentPage - 1})">Previous</a>`;
-            }
+    // Previous button
+    if (currentPage > 1) {
+        paginationControls.innerHTML += `<a href="#" onclick="changePage(${currentPage - 1})">Previous</a>`;
+    }
 
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                paginationControls.innerHTML += `<a href="#" class="${currentPage === i ? 'active' : ''}" onclick="changePage(${i})">${i}</a>`;
-            }
+    // Display at most 3 pages at a time
+    let startPage = Math.max(1, currentPage - 1); // Start page is either current - 1 or 1
+    let endPage = Math.min(startPage + 2, totalPages); // End page is either start + 2 or the last page
 
-            // Next button
-            if (currentPage < totalPages) {
-                paginationControls.innerHTML += `<a href="#" onclick="changePage(${currentPage + 1})">Next</a>`;
-            }
-        }
+    // Ensure there are always 3 pages if possible
+    if (endPage - startPage < 2 && endPage < totalPages) {
+        startPage = Math.max(1, endPage - 2);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        paginationControls.innerHTML += `<a href="#" class="${currentPage === i ? 'active' : ''}" onclick="changePage(${i})">${i}</a>`;
+    }
+
+    // Next button
+    if (currentPage < totalPages) {
+        paginationControls.innerHTML += `<a href="#" onclick="changePage(${currentPage + 1})">Next</a>`;
+    }
+}
+
 
         function changePage(page) {
             currentPage = page;
