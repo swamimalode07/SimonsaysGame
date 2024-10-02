@@ -33,11 +33,13 @@ const updateLevel =  (req, res) => {
             }
 
             if (currentLevel > user.maxLevel) {
+                user.results.push({ score: currentLevel });
                 user.maxLevel = currentLevel;
                 return user.save().then(() => {
                     res.status(200).send("Max level updated successfully!");
                 });
             } else {
+                user.results.push({ score: currentLevel });
                 res.status(200).send("No update needed.");
             }
         })
