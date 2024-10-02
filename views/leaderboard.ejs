@@ -16,7 +16,7 @@
 
         .nav {
             margin-top: 0;
-            position: fixed;
+            position: relative;
             width: 100%;
             top: 0;
             background-color: #4a90e2;
@@ -93,6 +93,28 @@
         .top-user .fa-medal {
             margin-left: 10px;
             color: black;
+        }
+
+        .vertically-center {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .play-again-btn {
+            width: fit-content;
+            position: absolute;
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            right: 1rem;
+        }
+        .play-again-btn:hover {
+            background-color: #fff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transform: translateY(-50%) scale(1.05);
+            transition: transform 0.2s ease-in-out; 
         }
 
         /* Back to top button */
@@ -183,7 +205,11 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <h1 class="nav">Leaderboard</h1>
+    <nav class="nav">
+        <h1>Leaderboard</h1>
+        <% const url = 'main?username=' + encodeURIComponent(username); %>
+        <button class="play-again-btn vertically-center" id="playAgainBtn" onclick="window.location.href='<%= url %>'">Play again</button>
+    </nav>    
     <div class="users">
         <ul>
             <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
