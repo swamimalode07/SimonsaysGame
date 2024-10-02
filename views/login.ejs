@@ -45,6 +45,7 @@
 
       /* Title Styles */
       h1 {
+        font-family: "Bangers", cursive;
         font-size: 2.5em;
         margin-bottom: 20px;
         color: #fff;
@@ -254,40 +255,40 @@
     </div>
 
     <script>
-        const colors = ["#e74c3c", "#f1c40f", "#2ecc71", "#fff", "#9b59b6"];
-  
-        function createBall() {
-          const ball = document.createElement("div");
-          const size = Math.random() * 40 + 20;
-          const isLogo = Math.random() > 0.9;
-  
-          ball.classList.add("ball");
-          ball.style.width = `${size}px`;
-          ball.style.height = `${size}px`;
-          ball.style.left = `${Math.random() * 100}vw`;
-          ball.style.borderRadius = "50%";
-          ball.style.position = "absolute";
-          ball.style.zIndex = "0";
-          ball.style.animation = `fall ${Math.random() * 2 + 3}s linear forwards`;
-  
-          if (isLogo) {
-            ball.style.backgroundImage = "url('/logo.png')";
-            ball.style.backgroundSize = "contain";
-            ball.style.backgroundRepeat = "no-repeat";
-            ball.style.backgroundPosition = "center";
-          } else {
-            ball.style.backgroundColor =
-              colors[Math.floor(Math.random() * colors.length)];
-          }
-  
-          document.body.appendChild(ball);
-  
-          ball.addEventListener("animationend", () => {
-            ball.remove();
-          });
+      const colors = ["#e74c3c", "#f1c40f", "#2ecc71", "#fff", "#9b59b6"];
+
+      function createBall() {
+        const ball = document.createElement("div");
+        const size = Math.random() * 40 + 20;
+        const isLogo = Math.random() > 0.9;
+
+        ball.classList.add("ball");
+        ball.style.width = `${size}px`;
+        ball.style.height = `${size}px`;
+        ball.style.left = `${Math.random() * 100}vw`;
+        ball.style.borderRadius = "50%";
+        ball.style.position = "absolute";
+        ball.style.zIndex = "0";
+        ball.style.animation = `fall ${Math.random() * 2 + 3}s linear forwards`;
+
+        if (isLogo) {
+          ball.style.backgroundImage = "url('/logo.png')";
+          ball.style.backgroundSize = "contain";
+          ball.style.backgroundRepeat = "no-repeat";
+          ball.style.backgroundPosition = "center";
+        } else {
+          ball.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
         }
-  
-        setInterval(createBall, 200);
-      </script>
+
+        document.body.appendChild(ball);
+
+        ball.addEventListener("animationend", () => {
+          ball.remove();
+        });
+      }
+
+      setInterval(createBall, 200);
+    </script>
   </body>
 </html>
