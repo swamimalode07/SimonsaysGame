@@ -1,204 +1,198 @@
-html,
-body {
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+html, body {
+    overflow-x: hidden; 
+    margin: 0;
+    padding: 0; 
 }
 body {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100vh;
-  margin: 0;
-  font-family: "Assistant", sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Assistant', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 .upper-txt {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: #4a90e2;
-  color: #fff;
-  padding: 2rem;
-  width: 100%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #4a90e2;
+    color: #fff;
+    padding: 2rem;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem; 
 }
 
 .upper-txt h1 {
-  font-family: "Bangers", cursive;
-  margin: 0;
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.3;
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.3; 
 }
 
 .upper-txt h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 400;
-  line-height: 1.3;
-  margin-top: 0.5rem;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-top: 0.5rem; 
 }
 
 .btn-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.line-one,
-.line-two {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px; /* Add space between rows */
+.line-one, .line-two {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; /* Add space between rows */
 }
 
 .btn {
-  height: 12.5rem;
-  width: 12.5rem;
-  border-radius: 10%;
-  border: none;
-  margin: 1rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  background-color: #3498db;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 12.5rem;
+    width: 12.5rem;
+    border-radius: 10%;
+    border: none;
+    margin: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: #3498db; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .btn:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .red {
-  background-color: #e74c3c;
+    background-color: #e74c3c;
 }
 
 .yellow {
-  background-color: #f1c40f;
+    background-color: #f1c40f;
 }
 
 .purple {
-  background-color: #9b59b6;
+    background-color: #9b59b6;
 }
 
 .green {
-  background-color: #2ecc71;
+    background-color: #2ecc71;
 }
 
 .flash {
-  background-color: #fff;
+    background-color: #fff;
 }
 
 .userflash {
-  background-color: #3498db;
+    background-color: #3498db;
 }
 
 @media (max-width: 768px) {
-  .upper-txt {
-    padding: 1rem;
-  }
+    .upper-txt {
+        padding: 1rem;
+    }
 
-  .upper-txt h1 {
-    font-size: 2rem;
-  }
+    .upper-txt h1 {
+        font-size: 2rem;
+    }
 
-  .upper-txt h2 {
-    font-size: 1.2rem;
-  }
+    .upper-txt h2 {
+        font-size: 1.2rem;
+    }
 
-  .btn {
-    height: 8rem;
-    width: 8rem;
-    font-size: 1rem;
-  }
+    .btn {
+        height: 8rem;
+        width: 8rem;
+        font-size: 1rem;
+    }
 }
 
 @media (max-width: 480px) {
-  .upper-txt {
-    padding: 0.5rem;
-  }
+    .upper-txt {
+        padding: 0.5rem;
+    }
 
-  .upper-txt h1 {
-    font-size: 1.8rem;
-  }
+    .upper-txt h1 {
+        font-size: 1.8rem;
+    }
 
-  .upper-txt h2 {
-    font-size: 1rem;
-  }
+    .upper-txt h2 {
+        font-size: 1rem;
+    }
 
-  .btn {
-    height: 6rem;
-    width: 6rem;
-    font-size: 0.8rem;
-  }
+    .btn {
+        height: 6rem;
+        width: 6rem;
+        font-size: 0.8rem;
+    }
 }
 
 .button-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  position: sticky;
-  top: 15rem;
-  margin: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 20px; 
+    position:sticky;
+    top: 15rem; 
+    margin: none;
 }
 
-.how-to-play-btn,
-.toggle-button {
-  font-family: "Bangers", cursive;
-  padding: 15px 30px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.how-to-play-btn, .toggle-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .how-to-play-btn {
-  background-color: #ff5733;
-  color: white;
+    background-color: #ff5733;
+    color: white;
 }
 
 .how-to-play-btn:hover {
-  background-color: #e74c3c;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-  transform: scale(1.05);
+    background-color: #e74c3c;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
 }
 
 .toggle-button {
-  font-family: "Bangers", cursive;
-  background-color: #3498db;
-  color: white;
+    background-color: #3498db;
+    color: white;
 }
 
 .toggle-button:hover {
-  background-color: #2980b9;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-  transform: scale(1.05);
+    background-color: #2980b9;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-  .button-container {
-    top: 10rem;
-  }
 
-  .how-to-play-btn,
-  .toggle-button {
-    width: 80%;
-    font-size: 16px;
-  }
+@media (max-width: 768px) {
+    .button-container {
+        top: 10rem;
+    }
+
+    .how-to-play-btn, .toggle-button {
+        width: 80%;
+        font-size: 16px;
+    }
 }
