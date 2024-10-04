@@ -1,6 +1,6 @@
 const { User } = require("../Models/userModel.cjs");
 
-// Function to handle login requests
+// Handles login requests
 const login = (req, res) => {
     const username = req.body.username;
     // Try to find a user in the database with the given username
@@ -21,7 +21,7 @@ const login = (req, res) => {
         .catch(err => res.status(400).send("Error handling login."));
 };
 
-// Function to update the user's level
+// Update the user's level
 const updateLevel = (req, res) => {
     const username = req.body.username;
     const currentLevel = parseInt(req.body.currentLevel, 10);
@@ -53,11 +53,11 @@ const updateLevel = (req, res) => {
             res.status(500).send("Error updating max level.");
         });
 };
-// Function to render the main page
+// Render the main page
 const main = (req, res) => {
     res.render('main', { query: req.query });
 };
-// Function to render the leaderboard page
+// Render the leaderboard page
 const leaderboard = (req, res) => {
     User.find().sort({ maxLevel: -1 })
         // Return a list of users sorted by max level in descending order
