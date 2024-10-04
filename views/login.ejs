@@ -197,6 +197,7 @@
   <body>
     <div class="container">
       <h1>
+        <!-- Title and Logo -->
         <img
           style="
             width: 100px;
@@ -208,7 +209,9 @@
           src="./logo.png"
         />Simon Says Game
       </h1>
+      <!-- Login Form -->
       <form action="/login" method="POST">
+        <!-- Input textfield for username -->
         <input
           type="text"
           id="username"
@@ -217,12 +220,14 @@
           required
         />
         <br />
+        <!-- Submit button with an SVG icon -->
         <button
           type="submit"
           style="justify-content: center; align-items: center"
         >
           <div class="svg-wrapper-1">
             <div class="svg-wrapper">
+              <!-- SVG element-->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -237,6 +242,7 @@
               </svg>
             </div>
           </div>
+          <!-- Add the text "Play" next to the icon -->
           <span>Play</span>
         </button>
       </form>
