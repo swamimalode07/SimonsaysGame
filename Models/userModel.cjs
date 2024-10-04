@@ -1,7 +1,6 @@
-// Import the mongoose library
 const mongoose = require('mongoose');
 
-// Define a schema for the User model
+// Schema for the User model
 const userSchema = new mongoose.Schema({
     // The username field is a string, required, and must be unique
     username: {

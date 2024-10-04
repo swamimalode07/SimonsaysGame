@@ -7,16 +7,16 @@ const { login, updateLevel, main, leaderboard } = require('../controllers/loginC
 // Create a new router object
 const router = express.Router();
 
-// Define a POST route for the login endpoint, using the login controller function
+// POST route for the login endpoint, using the login controller function
 router.post('/login', login);
 
-// Define a POST route for the update-level endpoint, using the updateLevel controller function
+// POST route for the update-level endpoint, using the updateLevel controller function
 router.post('/update-level', updateLevel);
 
-// Define a GET route for the main endpoint, using the main controller function
+// GET route for the main endpoint, using the main controller function
 router.get('/main', main);
 
-// Define a GET route for the leaderboard endpoint, using the leaderboard controller function
+// GET route for the leaderboard endpoint, using the leaderboard controller function
 router.get('/leaderboard', leaderboard);
 
 // Export the router object for use in other parts of the application

@@ -35,7 +35,7 @@
             font-size: 16px;
             transition: all 0.3s ease;
         }
-        
+
         /* Container Styling with Glassy Metal Effect */
         .container {
             text-align: center;
@@ -86,32 +86,25 @@
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </head>
 <body>
-
-    <!-- Container for the error message -->
     <div class="container">
-        <!-- Lottie animation player -->
         <dotlottie-player src="https://lottie.host/5a823932-1a14-4813-ae86-cb221ee6394d/sz0ORlQHrT.json"
                           background="transparent"
                           speed="1"
                           style="width: 300px; height: 300px;"
                           loop autoplay>
         </dotlottie-player>
-        <!-- Error message -->
         <h1>Error <%= errorStatus %></h1>
         <p><%= errorMessage %></p>
-        <!-- Go Back button -->
         <button class="button" onclick="history.back()" >Go Back</button>
     </div>
     <script>
-        //Define the colors for the balls 
         const colors = ["#e74c3c", "#f1c40f", "#2ecc71", "#fff", "#9b59b6"];
-        //Create a new ball every 200 milliseconds 
+        // Function to create a ball
         function createBall() {
-            //Create a new div element to represent the ball 
             const ball = document.createElement("div");
             const size = Math.random() * 40 + 20;
             const isLogo = Math.random() > 0.9;
-            //Set the ball's size, position, and animation
+
             ball.classList.add("ball");
             ball.style.width = `${size}px`;
             ball.style.height = `${size}px`;
@@ -119,27 +112,25 @@
             ball.style.borderRadius = "50%";
             ball.style.position = "absolute";
             ball.style.zIndex = "0";
-            //Set the ball's color randomly 
             ball.style.animation = `fall ${Math.random() * 2 + 3}s linear forwards`;
-
+            // Set logo or random color for the ball
             if (isLogo) {
                 ball.style.backgroundImage = "url('/logo.png')";
                 ball.style.backgroundSize = "contain";
                 ball.style.backgroundRepeat = "no-repeat";
                 ball.style.backgroundPosition = "center";
             } else {
-                //Set the ball's background color to a random color from the array 
                 ball.style.backgroundColor =
                     colors[Math.floor(Math.random() * colors.length)];
             }
 
             document.body.appendChild(ball);
-
+            // Add an event listener to the ball to remove it when the animation is finished
             ball.addEventListener("animationend", () => {
                 ball.remove();
             });
         }
-        //Run the createBall function every 200 milliseconds 
+        // Set interval to create a new ball every 200ms
         setInterval(createBall, 200);
     </script>
 </body>

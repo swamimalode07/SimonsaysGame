@@ -11,12 +11,13 @@
 <body>
     
     <div class="upper-txt">
-        
+        <!-- Welcome message and game title -->
         <h1>Welcome, <%= query.username %>!</h1>
         <h1>Simon Says Game</h1>
         <h2>Press any key to start the Game</h2>
 
     </div>
+    <!-- Button containers -->
     <div class="btn-container">
         <div class="line-one">
             <button class="btn red" id="red"></button>
@@ -28,6 +29,7 @@
             <button class="btn purple" id="purple"></button>
         </div>
     </div>
+    <!-- Buttons for how to play and view leaderboard -->
     <div class="button-container">
         <button class="how-to-play-btn" id="howToPlayBtn">How to Play</button>
         <button class="toggle-button" id="leaderboardBtn">View Leaderboard</button>
@@ -36,10 +38,11 @@
     <script>
         const username = "<%= query.username %>";  // Get the username dynamically from the EJS template
         const url = '/leaderboard?username=' + encodeURIComponent(username);
-
+        // Function to update the level when a player completes a level
         function levelCompleted(currentLevel) {
             // console.log('Level completed, currentLevel:', currentLevel); // Log the currentLevel being sent
 
+            // Send a POST request to update the level
             fetch('/update-level', {
                 method: 'POST',
                 headers: {
@@ -47,16 +50,19 @@
                 },
                 body: `username=${encodeURIComponent(username)}&currentLevel=${encodeURIComponent(currentLevel)}`
             })
+            // Log the response
             .then(response => response.text())
             .then(() => {
                 // console.log('Level updated successfully, redirecting to leaderboard');
                 window.location.href = url;
             })
+            // Handle any errors that occur
             .catch(error => {
                 console.error('Error updating level:', error);
             });
         }
 
+        // Initialize variables
         let userSeq = [];
         let gameSeq = [];
         let h2 = document.querySelector("h2");
@@ -64,7 +70,9 @@
         let started = false;
         let level = 0;
 
+        // Add event listeners for button clicks and the leaderboard button
         document.addEventListener("click", function() {
+            // Start the game when a button is clicked
             if (!started) {
                 // console.log("Game has started");
                 started = true;
@@ -77,21 +85,21 @@
         document.getElementById("leaderboardBtn").addEventListener("click", function() {
             location.href = url
         });
-
+        // Function to flash a button
         function btnFlash(btn) {
             btn.classList.add("flash");
             setTimeout(function() {
                 btn.classList.remove("flash");
             }, 300);
         }
-
+        // Function to flash a button for the user
         function userFlash(btn) {
             btn.classList.add("userflash");
             setTimeout(function() {
                 btn.classList.remove("userflash");
             }, 300);
         }
-
+        // Function to advance to the next level
         function levelUp() {
             userSeq = [];
             level++;
@@ -104,13 +112,14 @@
             // console.log("Game sequence:", gameSeq);
             btnFlash(rndmBtn);
         }
-
+        // Function to check if the user's sequence is correct
         function check(idx) {
             if (userSeq[idx] === gameSeq[idx]) {
                 if (userSeq.length === gameSeq.length) {
                     setTimeout(levelUp, 1000);
                 }
             } else {
+                // Display a game over message and reset the level
                 h2.innerHTML = `Game over! Your score is <b>${level}</b> <br> Press any key to start`;
 
                 levelCompleted(level - 1);  
@@ -123,7 +132,7 @@
                 reset(); 
             }
         }
-
+        // Function to handle button clicks
         function btnPress() {
             let btn = this;
 
@@ -135,19 +144,19 @@
 
             check(userSeq.length - 1);
         }
-
+        // Add event listeners to the buttons
         let allBtns = document.querySelectorAll(".btn");
         allBtns.forEach(btn => {
             btn.addEventListener("click", btnPress);
         });
-
+        // Reset the game when a game over message is displayed
         function reset() {
             started = false;
             level = 0;
             userSeq = [];
             gameSeq = [];
         }
-
+        // Function to display the how to play message
         document.getElementById("howToPlayBtn").addEventListener("click", function() {
             alert("How to Play:\n1. Memorize the sequence of flashes.\n2. Click the buttons in the same order.\n3. Complete each level to progress!\n4. Game over if you miss the sequence.");
         });
