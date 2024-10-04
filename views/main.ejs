@@ -6,7 +6,19 @@
     <title>Simon Says Game</title>
     <link rel="stylesheet" href="styletwo.css">
     <link rel="icon" href="/logo.png" type="image/png">
+    <style>
+        /* Styling for the timer container */
+        #timerContainer {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
+        #timerIcon {
+            width: 20px; /* Adjust the size as needed */
+            height: 20px;
+        }
+    </style>
 </head>
 <body>
     
@@ -15,7 +27,11 @@
         <h1>Welcome, <%= query.username %>!</h1>
         <h1>Simon Says Game</h1>
         <h2>Press any key to start the Game</h2>
-
+        <!-- Timer container with icon -->
+        <div id="timerContainer">
+            <img id="timerIcon" src="https://img.icons8.com/?size=100&id=RZUWLI9aYLdc&format=png&color=000000" alt="Timer Icon">
+            <h2 id="timerDisplay">Time: 0s</h2>
+        </div>
     </div>
     <!-- Button containers -->
     <div class="btn-container">
@@ -36,12 +52,11 @@
     </div>
     
     <script>
-        const username = "<%= query.username %>";  // Get the username dynamically from the EJS template
+        const username = "<%= query.username %>";
         const url = '/leaderboard?username=' + encodeURIComponent(username);
         // Function to update the level when a player completes a level
         function levelCompleted(currentLevel) {
-            // console.log('Level completed, currentLevel:', currentLevel); // Log the currentLevel being sent
-
+        
             // Send a POST request to update the level
             fetch('/update-level', {
                 method: 'POST',
@@ -53,7 +68,6 @@
             // Log the response
             .then(response => response.text())
             .then(() => {
-                // console.log('Level updated successfully, redirecting to leaderboard');
                 window.location.href = url;
             })
             // Handle any errors that occur
@@ -69,21 +83,36 @@
         let btns = ["yellow", "red", "purple", "green"];
         let started = false;
         let level = 0;
+        let timer;
+        let seconds = 0;
+
+        function startTimer() {
+            seconds = 0;
+            document.getElementById("timerDisplay").innerText = `Time: ${seconds}s`;
+            timer = setInterval(() => {
+                seconds++;
+                document.getElementById("timerDisplay").innerText = `Time: ${seconds}s`;
+            }, 1000);
+        }
+
+        function endTimer() {
+            clearInterval(timer);
+        }
 
         // Add event listeners for button clicks and the leaderboard button
         document.addEventListener("click", function() {
             // Start the game when a button is clicked
             if (!started) {
-                // console.log("Game has started");
                 started = true;
                 level = 0;
                 gameSeq = [];
                 levelUp();
+                startTimer();
             }
         });
 
         document.getElementById("leaderboardBtn").addEventListener("click", function() {
-            location.href = url
+            location.href = url;
         });
         // Function to flash a button
         function btnFlash(btn) {
@@ -109,7 +138,6 @@
             let rndmColor = btns[rndm];
             let rndmBtn = document.querySelector(`.${rndmColor}`);
             gameSeq.push(rndmColor);
-            // console.log("Game sequence:", gameSeq);
             btnFlash(rndmBtn);
         }
         // Function to check if the user's sequence is correct
@@ -121,6 +149,7 @@
             } else {
                 // Display a game over message and reset the level
                 h2.innerHTML = `Game over! Your score is <b>${level}</b> <br> Press any key to start`;
+                endTimer();
 
                 levelCompleted(level - 1);  
 
@@ -140,7 +169,6 @@
 
             let userColor = btn.getAttribute("id");
             userSeq.push(userColor);
-            // console.log("User sequence:", userSeq);
 
             check(userSeq.length - 1);
         }
@@ -155,6 +183,8 @@
             level = 0;
             userSeq = [];
             gameSeq = [];
+            endTimer();
+            document.getElementById("timerDisplay").innerText = `Time: 0s`;
         }
         // Function to display the how to play message
         document.getElementById("howToPlayBtn").addEventListener("click", function() {
