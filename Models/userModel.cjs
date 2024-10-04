@@ -12,7 +12,16 @@ const userSchema = new mongoose.Schema({
     maxLevel: {
         type: Number,
         default: 0 
-    }
+    },
+    results: [
+        {
+            score: Number,
+            date: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ]
 });
 
 // Create a User model using the userSchema

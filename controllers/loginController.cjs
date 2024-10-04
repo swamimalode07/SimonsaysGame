@@ -40,12 +40,16 @@ const updateLevel = (req, res) => {
             }
             // If the level is higher than the user's current max level, update the max level
             if (currentLevel > user.maxLevel) {
+                user.results.push({ score: currentLevel });
                 user.maxLevel = currentLevel;
                 return user.save().then(() => {
                     res.status(200).send("Max level updated successfully!");
                 });
             } else {
-                res.status(200).send("No update needed.");
+                user.results.push({ score: currentLevel });
+                return user.save().then(() => {
+                    res.status(200).send("Max level updated successfully!");
+                });
             }
         })
         // Catch any errors that occur during the update process
@@ -68,7 +72,24 @@ const leaderboard = (req, res) => {
         .catch(err => {
             res.status(500).send("Error retrieving leaderboard.");
         });
-};
 
-// Export the login, updateLevel, main, and leaderboard functions
-module.exports = { login, updateLevel, main, leaderboard };
+}
+// Render the userLeaderboard page
+const userLeaderboard = (req, res) => {
+    // Return a list of users sorted by max level in descending order
+    User.findOne({ username: req.query.user })
+        .then(currentUser => {
+            if (!currentUser) {
+                console.log(currentUser);
+                return res.status(404).send("User not found.");
+            }
+            res.render('userLeaderboard', { currentUser, username: req.query.username });
+        })
+        .catch(err => {
+            // Catch any errors that occur during the retrieval of the leaderboard data
+            res.status(500).send("Error retrieving leaderboard.");
+        });
+}
+
+// Export the login, updateLevel, main, leaderboard and userLeaderboard functions
+module.exports = { login, updateLevel, main, leaderboard, userLeaderboard };
