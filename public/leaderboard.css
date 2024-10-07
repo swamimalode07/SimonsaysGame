@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html, body {
   overflow-x: hidden; 
   margin: 0;
@@ -184,6 +188,7 @@ li i {
   background-color: #4a90e2; 
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); 
   transform: scale(1.1); 
+}
 
 #btn-back-to-top i {
   font-size: 24px; 

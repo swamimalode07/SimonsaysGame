@@ -18,5 +18,10 @@
     "joi": "^17.13.3",
     "mongoose": "^8.6.3",
     "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13"
   }
 }
