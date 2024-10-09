@@ -3,138 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Leaderboard</title>
+    <title>Leaderboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="/logo.png" type="image/png">
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-r from-blue-100 to-indigo-200 min-h-screen flex flex-col">
 
-    <!-- Back-to-top Button -->
-    <button type="button" class="fixed bottom-5 right-5 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700" id="btn-back-to-top">
+    <style>
+        html, body {
+            overflow-x: hidden; 
+            margin: 0;
+            padding: 0; 
+        }
+
+        .nav {
+            margin-top: 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background-color: #4a90e2;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000; 
+        }
+
+        .nav-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            gap: 16px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
+
+        .users {
+            margin-top: 160px; 
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        li {
+            width: 80%;
+            max-width: 500px;
+            color: #fff;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        li span {
+            font-weight: bold;
+        }
+
+        li i {
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .top-user {
+            background: linear-gradient(145deg, 
+                #fdd835, 
+                #fbc02d 20%, 
+                #ffeb3b 40%, 
+                #fbc02d 60%, 
+                #ff9800 80%, 
+                #f57c00 100% 
+            );
+            color: #000;
+        }
+
+        .top-user i {
+            color: #000;
+        }
+
+        .top-user .fa-medal {
+            margin-left: 10px;
+            color: black;
+        }
+
+        .play-again-btn {
+            width: fit-content;
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            right: 1rem;
+        }
+        
+        .play-again-btn:hover {
+            background-color: #fff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transform: scale(1.05);
+            transition: transform 0.2s ease-in-out; 
+        }
+
+        /* Back to top button */
+        #btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none; /* Initially hidden */
+    width: 60px;  
+    height: 60px; 
+    border-radius: 50%; 
+    background-color: #4a90e2; 
+    color: white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    border: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.5s; /* Added transform for smooth effect */
+}
+
+/* Arrow animation */
+@keyframes moveUp {
+    0% {
+        transform: translateY(20px); /* Start below */
+        opacity: 0; /* Start invisible */
+    }
+    100% {
+        transform: translateY(0); /* Move to original position */
+        opacity: 1; /* Fully visible */
+    }
+}
+
+/* Show the button with animation */
+#btn-back-to-top.show {
+    display: block; /* Change display to block when class is added */
+    animation: moveUp 0.5s ease-out forwards; /* Animation for appearing */
+}
+
+#btn-back-to-top:hover {
+    background-color: #4a90e2; 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); 
+    transform: scale(1.1); /* Scale up slightly on hover for effect */
+}
+
+#btn-back-to-top i {
+    font-size: 24px; 
+}
+
+
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            li {
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
+
+            .users {
+                margin-top: 138px; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            li {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+
+            li i {
+                font-size: 1.2rem;
+            }
+
+            .users {
+                margin-top: 135px; 
+            }
+
+            .nav-content {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to top button -->
+    <button type="button" class="btn btn-floating btn-lg" id="btn-back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Navigation -->
-    <nav class="p-6 shadow-lg" style="background-color: #4a90e2;">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-white text-4xl font-bold tracking-wide">Leaderboard</h1>
+    <nav class="nav">
+        <div class="nav-content">
+            <h1>Leaderboard</h1>
             <% const url = 'main?username=' + encodeURIComponent(username); %>
-            <button class="bg-white text-indigo-700 px-6 py-2 rounded-lg font-semibold hover:bg-indigo-100 transition-all" id="playAgainBtn" onclick="window.location.href='<%= url %>'">Play again</button>
+            <button class="play-again-btn" id="playAgainBtn" onclick="window.location.href='<%= url %>'">Play again</button>
         </div>
-    </nav>
-
-    <!-- Main Container -->
-    <div class="flex-grow flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-8">
-            <!-- Top 3 Players Section -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <!-- 1st Player -->
-                <% let top3Users = users.slice(0, 3); %>
-                <div class="flex flex-col items-center rounded-lg p-6 shadow-lg transition-transform hover:scale-105 top-user-gold">
-                    <i class="fas fa-crown text-yellow-200 text-6xl"></i>
-                    <h2 class="text-2xl font-bold mt-4 text-white"><%= top3Users[0].username %></h2>
-                    <p class="text-lg text-white">Level: <%= top3Users[0].maxLevel %></p>
-                </div>
-                <!-- 2nd Player -->
-                <div class="flex flex-col items-center rounded-lg p-5 shadow-lg transition-transform hover:scale-105 top-user-silver">
-                    <i class="fas fa-medal text-gray-100 text-4xl"></i>
-                    <h2 class="text-xl font-bold mt-3 text-white"><%= top3Users[1].username %></h2>
-                    <p class="text-lg text-white">Level: <%= top3Users[1].maxLevel %></p>
-                </div>
-                <!-- 3rd Player -->
-                <div class="flex flex-col items-center rounded-lg p-4 shadow-lg transition-transform hover:scale-105 top-user-bronze">
-                    <i class="fas fa-medal text-orange-200 text-3xl"></i>
-                    <h2 class="text-lg font-bold mt-2 text-white"><%= top3Users[2].username %></h2>
-                    <p class="text-md text-white">Level: <%= top3Users[2].maxLevel %></p>
-                </div>
-            </div>
-
-            <!-- Search & User List -->
-            <div class="mb-6">
-                <div class="relative flex items-center mb-4">
-                    <i class="fas fa-search text-gray-500 absolute ml-3"></i>
-                    <input type="text" id="searchInput" class="w-full pl-10 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Search for usernames..." onkeyup="filterUsers()">
-                </div>
-                <div id="noUserMessage" class="text-red-500 text-center hidden mb-6">No existing player with this name.</div>
-                <ul id="userList" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <% const remainingUsers = users.slice(3); %>
-                    <% remainingUsers.forEach((user, index) => { %>
-                        <li onclick="location.href='/history?user=<%= encodeURIComponent(user.username) %>'" class="hover:bg-indigo-100 p-4 rounded-lg shadow-md flex justify-between items-center transition-all cursor-pointer random-user-bg">
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-user text-indigo-500 text-2xl"></i>
-                                <span class="text-lg font-semibold text-gray-700"><%= user.username %></span>
-                            </div>
-                            <span class="text-lg font-bold text-indigo-700"><%= user.maxLevel %></span>
-                        </li>
-                    <% }) %>
-                </ul>
-            </div>
-        </div>
+    </nav>    
+    <div class="users">
+        <ul>
+            <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
+            <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %>
+            <% users.forEach((user, index) => { 
+                const color = colors[index % colors.length];
+                const isTopUser = user.username === topUser.username;
+            %>
+            <li onclick="location.href='/history?user=<%= encodeURIComponent(user.username) %>';" class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
+                <i class="fas fa-user"></i> 
+                <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
+                <% if (isTopUser) { %>
+                    <i class="fas fa-medal"></i>
+                <% } %>
+            </li>
+            <% }); %>
+        </ul>
     </div>
 
     <script>
-        const backToTopButton = document.getElementById('btn-back-to-top');
-        const userList = document.getElementById('userList');
-        const noUserMessage = document.getElementById('noUserMessage');
+        // Get the button
+        // Get the button
+let mybutton = document.getElementById("btn-back-to-top");
 
-        window.onscroll = function() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                backToTopButton.classList.add('show');
-            } else {
-                backToTopButton.classList.remove('show');
-            }
-        };
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function () {
+    scrollFunction();
+};
 
-        backToTopButton.addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.classList.add("show"); // Add the class to show the button with animation
+    } else {
+        mybutton.classList.remove("show"); // Remove the class to hide the button
+    }
+}
 
-        function filterUsers() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const li = userList.getElementsByTagName('li');
-            let foundUser = false;
+// When the user clicks on the button, scroll to the top of the document
+mybutton.addEventListener("click", backToTop);
 
-            for (let i = 0; i < li.length; i++) {
-                const txtValue = li[i].textContent || li[i].innerText;
-                if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                    foundUser = true;
-                } else {
-                    li[i].style.display = "none";
-                }
-            }
+function backToTop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+}
 
-            noUserMessage.style.display = foundUser ? "none" : "block";
-        }
-
-        // Random colors for remaining users
-        const randomColors = ['bg-red-200', 'bg-green-200', 'bg-blue-200', 'bg-purple-200', 'bg-pink-200'];
-        document.querySelectorAll('.random-user-bg').forEach((li, index) => {
-            li.classList.add(randomColors[index % randomColors.length]);
-        });
     </script>
-
-    <style>
-        .top-user-gold {
-            background: linear-gradient(145deg, 
-                #fdd835 0%,    
-                #fbc02d 20%,   
-                #ffeb3b 40%,   
-                #fbc02d 60%,   
-                #ff9800 80%,   
-                #f57c00 100%   
-            );
-        }
-     
-        .top-user-silver {
-            background: linear-gradient(145deg, #b0bec5, #9e9e9e 20%, #eceff1 40%, #9e9e9e 60%, #90a4ae 80%, #607d8b 100%);
-        }
-
-        .top-user-bronze {
-            background: linear-gradient(145deg, #e57e31, #e58a3d 20%, #f8bb7b 40%, #e58a3d 60%, #d2691e 80%, #cd853f 100%);
-        }
-    </style>
 </body>
 </html>
