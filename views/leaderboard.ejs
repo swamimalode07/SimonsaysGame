@@ -16,7 +16,7 @@
     </button>
 
     <!-- Navigation -->
-    <nav class="bg-indigo-700 p-6 shadow-lg">
+    <nav class="p-6 shadow-lg" style="background-color: #4a90e2;">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <h1 class="text-white text-4xl font-bold tracking-wide">Leaderboard</h1>
             <% const url = 'main?username=' + encodeURIComponent(username); %>
@@ -31,22 +31,22 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <!-- 1st Player -->
                 <% let top3Users = users.slice(0, 3); %>
-                <div class="flex flex-col items-center bg-yellow-300 rounded-lg p-6 shadow-lg transition-transform hover:scale-105">
-                    <i class="fas fa-crown text-yellow-500 text-6xl"></i>
-                    <h2 class="text-2xl font-bold mt-4"><%= top3Users[0].username %></h2>
-                    <p class="text-lg text-gray-700">Level: <%= top3Users[0].maxLevel %></p>
+                <div class="flex flex-col items-center rounded-lg p-6 shadow-lg transition-transform hover:scale-105 top-user-gold">
+                    <i class="fas fa-crown text-yellow-200 text-6xl"></i>
+                    <h2 class="text-2xl font-bold mt-4 text-white"><%= top3Users[0].username %></h2>
+                    <p class="text-lg text-white">Level: <%= top3Users[0].maxLevel %></p>
                 </div>
                 <!-- 2nd Player -->
-                <div class="flex flex-col items-center bg-gray-300 rounded-lg p-5 shadow-lg transition-transform hover:scale-105">
-                    <i class="fas fa-medal text-gray-400 text-4xl"></i>
-                    <h2 class="text-xl font-bold mt-3"><%= top3Users[1].username %></h2>
-                    <p class="text-lg text-gray-700">Level: <%= top3Users[1].maxLevel %></p>
+                <div class="flex flex-col items-center rounded-lg p-5 shadow-lg transition-transform hover:scale-105 top-user-silver">
+                    <i class="fas fa-medal text-gray-100 text-4xl"></i>
+                    <h2 class="text-xl font-bold mt-3 text-white"><%= top3Users[1].username %></h2>
+                    <p class="text-lg text-white">Level: <%= top3Users[1].maxLevel %></p>
                 </div>
                 <!-- 3rd Player -->
-                <div class="flex flex-col items-center bg-orange-300 rounded-lg p-4 shadow-lg transition-transform hover:scale-105">
-                    <i class="fas fa-medal text-orange-500 text-3xl"></i>
-                    <h2 class="text-lg font-bold mt-2"><%= top3Users[2].username %></h2>
-                    <p class="text-md text-gray-700">Level: <%= top3Users[2].maxLevel %></p>
+                <div class="flex flex-col items-center rounded-lg p-4 shadow-lg transition-transform hover:scale-105 top-user-bronze">
+                    <i class="fas fa-medal text-orange-200 text-3xl"></i>
+                    <h2 class="text-lg font-bold mt-2 text-white"><%= top3Users[2].username %></h2>
+                    <p class="text-md text-white">Level: <%= top3Users[2].maxLevel %></p>
                 </div>
             </div>
 
@@ -60,8 +60,7 @@
                 <ul id="userList" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <% const remainingUsers = users.slice(3); %>
                     <% remainingUsers.forEach((user, index) => { %>
-                        <li onclick="location.href='/history?user=<%= encodeURIComponent(user.username) %>'" class="bg-indigo-50 hover:bg-indigo-100 p-4 rounded-lg shadow-md flex justify-between items-center transition-all cursor-pointer 
-                            <%= (index % 2 === 0) ? 'bg-green-200' : 'bg-blue-200' %>">
+                        <li onclick="location.href='/history?user=<%= encodeURIComponent(user.username) %>'" class="hover:bg-indigo-100 p-4 rounded-lg shadow-md flex justify-between items-center transition-all cursor-pointer random-user-bg">
                             <div class="flex items-center space-x-3">
                                 <i class="fas fa-user text-indigo-500 text-2xl"></i>
                                 <span class="text-lg font-semibold text-gray-700"><%= user.username %></span>
@@ -109,6 +108,26 @@
 
             noUserMessage.style.display = foundUser ? "none" : "block";
         }
+
+        // Random colors for remaining users
+        const randomColors = ['bg-red-200', 'bg-green-200', 'bg-blue-200', 'bg-purple-200', 'bg-pink-200'];
+        document.querySelectorAll('.random-user-bg').forEach((li, index) => {
+            li.classList.add(randomColors[index % randomColors.length]);
+        });
     </script>
+
+    <style>
+        .top-user-gold {
+            background: linear-gradient(145deg, #fdd835, #fbc02d 20%, #ffeb3b 40%, #fbc02d 60%, #ff9800 80%, #f57c00 100%);
+        }
+
+        .top-user-silver {
+            background: linear-gradient(145deg, #b0bec5, #9e9e9e 20%, #eceff1 40%, #9e9e9e 60%, #90a4ae 80%, #607d8b 100%);
+        }
+
+        .top-user-bronze {
+            background: linear-gradient(145deg, #e57e31, #e58a3d 20%, #f8bb7b 40%, #e58a3d 60%, #d2691e 80%, #cd853f 100%);
+        }
+    </style>
 </body>
 </html>
