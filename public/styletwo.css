@@ -68,9 +68,14 @@ body {
     font-weight: bold;
     color: #fff;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
     background-color: #3498db; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.not-Active{
+    filter: saturate(80%);
+    pointer-events: none;
 }
 
 .btn:hover {
