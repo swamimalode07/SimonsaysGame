@@ -87,6 +87,11 @@
                 document.getElementById("timerDisplay").innerText = `Time: ${seconds}s`;
             }, 1000);
         }
+        //Removing hover over effects before starting the game and disabling the buttons
+        btns.forEach(btn => {
+            document.getElementById(btn).classList.add("not-Active")
+            document.getElementById(btn).disabled = true;
+        });
 
         function endTimer() {
             clearInterval(timer);
@@ -99,6 +104,12 @@
                 gameSeq = [];
                 levelUp();
                 startTimer();
+
+                 //Adding back the hover over effects after starting the game and enabling the buttons
+                 btns.forEach(btn => {
+                    document.getElementById(btn).classList.remove("not-Active")
+                    document.getElementById(btn).disabled = false;
+                });
             }
         });
 
