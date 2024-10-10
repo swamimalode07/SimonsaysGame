@@ -27,22 +27,22 @@
     <!-- Main Container -->
     <div class="flex-grow flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-8">
-            <!-- Top 3 Players Section -->
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <!-- 1st Player -->
+                
                 <% let top3Users = users.slice(0, 3); %>
                 <div class="flex flex-col items-center rounded-lg p-6 shadow-lg transition-transform hover:scale-105 top-user-gold">
                     <i class="fas fa-crown text-yellow-200 text-6xl"></i>
                     <h2 class="text-2xl font-bold mt-4 text-black"><%= top3Users[0].username %></h2>
                     <p class="text-lg text-white">Level: <%= top3Users[0].maxLevel %></p>
                 </div>
-                <!-- 2nd Player -->
+                
                 <div class="flex flex-col items-center rounded-lg p-5 shadow-lg transition-transform hover:scale-105 top-user-silver">
                     <i class="fas fa-medal text-gray-100 text-4xl"></i>
                     <h2 class="text-xl font-bold mt-3 text-black"><%= top3Users[1].username %></h2>
                     <p class="text-lg text-white">Level: <%= top3Users[1].maxLevel %></p>
                 </div>
-                <!-- 3rd Player -->
+                
                 <div class="flex flex-col items-center rounded-lg p-4 shadow-lg transition-transform hover:scale-105 top-user-bronze">
                     <i class="fas fa-medal text-orange-200 text-3xl"></i>
                     <h2 class="text-lg font-bold mt-2 text-black"><%= top3Users[2].username %></h2>
@@ -58,14 +58,16 @@
                 </div>
                 <div id="noUserMessage" class="text-red-500 text-center hidden mb-6">No existing player with this name.</div>
                 <ul id="userList" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <% const colors = ['bg-red-500', 'bg-green-500', 'bg-blue-500', 'bg-purple-500', 'bg-pink-500', 'bg-orange-400']; %>
                     <% const remainingUsers = users.slice(3); %>
                     <% remainingUsers.forEach((user, index) => { %>
-                        <li onclick="location.href='/history?user=<%= encodeURIComponent(user.username) %>'" class="hover:bg-indigo-100 p-4 rounded-lg shadow-md flex justify-between items-center transition-all cursor-pointer random-user-bg">
+                        <li onclick="location.href='/history?user=<%= encodeURIComponent(user.username) %>'" 
+                            class="hover:bg-indigo-100 p-4 rounded-lg shadow-md flex justify-between items-center transition-all cursor-pointer <%= colors[index % colors.length] %>">
                             <div class="flex items-center space-x-3">
                                 <i class="fas fa-user text-indigo-500 text-2xl"></i>
-                                <span class="text-lg font-semibold text-gray-700"><%= user.username %></span>
+                                <span class="text-lg font-semibold text-white"><%= user.username %></span>
                             </div>
-                            <span class="text-lg font-bold text-indigo-700"><%= user.maxLevel %></span>
+                            <span class="text-lg font-bold text-white"><%= user.maxLevel %></span>
                         </li>
                     <% }) %>
                 </ul>
@@ -108,16 +110,10 @@
 
             noUserMessage.style.display = foundUser ? "none" : "block";
         }
-
-        // Random colors for remaining users
-        const randomColors = ['bg-red-200', 'bg-green-200', 'bg-blue-200', 'bg-purple-200', 'bg-pink-200'];
-        document.querySelectorAll('.random-user-bg').forEach((li, index) => {
-            li.classList.add(randomColors[index % randomColors.length]);
-        });
     </script>
 
     <style>
-        /* Updated gradient styles for top users */
+        
         .top-user-gold {
             background: linear-gradient(145deg, #f0e68c, #f7d15a 20%, #ffcc33 40%, #f5b500 60%, #db9500 80%, #b67c00 100%);
         }
@@ -130,33 +126,7 @@
             background: linear-gradient(145deg, #c19a6b, #b07e52 20%, #a96a4f 40%, #925d42 60%, #7b4930 80%, #603912 100%);
         }
 
-        /* Updated gradient colors for random users */
-        .random-user-bg {
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        .random-user-bg:nth-child(1) {
-            background: linear-gradient(145deg, #ffafbd, #ffc3a0);
-        }
-
-        .random-user-bg:nth-child(2) {
-            background: linear-gradient(145deg, #a1c4fd, #c2e9fb);
-        }
-
-        .random-user-bg:nth-child(3) {
-            background: linear-gradient(145deg, #ffecd2, #fcb69f);
-        }
-
-        .random-user-bg:nth-child(4) {
-            background: linear-gradient(145deg, #d4fc79, #96e6a1);
-        }
-
-        .random-user-bg:nth-child(5) {
-            background: linear-gradient(145deg, #cfd9df, #e2ebf0);
-        }
-
-        /* Hover effect */
+        
         .random-user-bg:hover {
             transform: scale(1.05);
         }
