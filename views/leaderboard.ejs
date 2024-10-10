@@ -15,14 +15,22 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Navigation -->
+   
     <nav class="p-6 shadow-lg" style="background-color: #4a90e2;">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-white text-4xl font-bold tracking-wide">Leaderboard</h1>
+        <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap">
+            
+            <h1 class="text-white text-3xl md:text-4xl font-bold tracking-wide">Leaderboard</h1>
+            
             <% const url = 'main?username=' + encodeURIComponent(username); %>
-            <button class="bg-white text-indigo-700 px-6 py-2 rounded-lg font-semibold hover:bg-indigo-100 transition-all" id="playAgainBtn" onclick="window.location.href='<%= url %>'">Play again</button>
+            <button 
+                class="mt-4 md:mt-0 bg-white text-indigo-700 px-4 md:px-6 py-2 text-sm md:text-base rounded-lg font-semibold hover:bg-indigo-100 transition-all"
+                id="playAgainBtn"
+                onclick="window.location.href='<%= url %>'">
+                Play again
+            </button>
         </div>
     </nav>
+
 
     <!-- Main Container -->
     <div class="flex-grow flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
