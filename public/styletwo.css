@@ -71,7 +71,7 @@ body {
     transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
     background-color: #3498db; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    filter: saturate(200%);
+    filter: saturate(120%);
 }
 
 .not-Active{
