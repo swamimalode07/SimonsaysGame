@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styletwo.css">
     <link rel="icon" href="/logo.png" type="image/png">
     <style>
-        /* Styling for the timer container */
+        
         #timerContainer {
             display: flex;
             align-items: center;
@@ -15,8 +15,48 @@
         }
 
         #timerIcon {
-            width: 20px; /* Adjust the size as needed */
+            width: 20px; 
             height: 20px;
+        }
+
+       
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.4); 
+        }
+
+      
+        .modal-content {
+            background-color: #4a90e2;
+            color: white;
+            margin: 2px;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 500px;
+        }
+
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -26,7 +66,7 @@
         <h1>Welcome, <%= query.username %>!</h1>
         <h1>Simon Says Game</h1>
         <h2>Press any key to start the Game</h2>
-        <!-- Timer container with icon -->
+       
         <div id="timerContainer">
             <img id="timerIcon" src="https://img.icons8.com/?size=100&id=RZUWLI9aYLdc&format=png&color=000000" alt="Timer Icon">
             <h2 id="timerDisplay">Time: 0s</h2>
@@ -49,6 +89,18 @@
         <button class="toggle-button" id="leaderboardBtn">View Leaderboard</button>
     </div>
     
+    
+    <div id="howToPlayModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>How to Play ?</h2>
+            <p>1. Memorize the sequence of flashes.<br>
+               2. Click the buttons in the same order.<br>
+               3. Complete each level to progress!<br>
+               4. Game over if you miss the sequence.</p>
+        </div>
+    </div>
+
     <script>
         const username = "<%= query.username %>";
         const url = '/leaderboard?username=' + encodeURIComponent(username);
@@ -88,6 +140,12 @@
             }, 1000);
         }
 
+        
+        btns.forEach(btn => {
+            document.getElementById(btn).classList.add("not-Active");
+            document.getElementById(btn).disabled = true;
+        });
+
         function endTimer() {
             clearInterval(timer);
         }
@@ -99,6 +157,12 @@
                 gameSeq = [];
                 levelUp();
                 startTimer();
+
+                
+                btns.forEach(btn => {
+                    document.getElementById(btn).classList.remove("not-Active");
+                    document.getElementById(btn).disabled = false;
+                });
             }
         });
 
@@ -177,9 +241,26 @@
             document.getElementById("timerDisplay").innerText = `Time: 0s`;
         }
 
-        document.getElementById("howToPlayBtn").addEventListener("click", function() {
-            alert("How to Play:\n1. Memorize the sequence of flashes.\n2. Click the buttons in the same order.\n3. Complete each level to progress!\n4. Game over if you miss the sequence.");
-        });
+        const modal = document.getElementById("howToPlayModal");
+        const btn = document.getElementById("howToPlayBtn");
+        const span = document.getElementsByClassName("close")[0];
+
+       
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+       
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>

@@ -6,12 +6,11 @@
     <title>Responsive Leaderboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="/logo.png" type="image/png">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="..//leaderboard.css">
 </head>
-<body class="bg-gradient-to-r from-blue-100 to-indigo-200 min-h-screen flex flex-col">
-
-    <!-- Back-to-top Button -->
-    <button type="button" class="fixed bottom-5 right-5 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700" id="btn-back-to-top">
+<body>
+   
+    <button type="button" class="btn btn-floating btn-lg" id="btn-back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
@@ -29,58 +28,34 @@
                 Play again
             </button>
         </div>
-    </nav>
+    </nav>    
 
-
-    <!-- Main Container -->
-    <div class="flex-grow flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-8">
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                
-                <% let top3Users = users.slice(0, 3); %>
-                <div class="flex flex-col items-center rounded-lg p-6 shadow-lg transition-transform hover:scale-105 top-user-gold">
-                    <i class="fas fa-crown text-yellow-200 text-6xl"></i>
-                    <h2 class="text-2xl font-bold mt-4 text-black"><%= top3Users[0].username %></h2>
-                    <p class="text-lg text-white">Level: <%= top3Users[0].maxLevel %></p>
-                </div>
-                
-                <div class="flex flex-col items-center rounded-lg p-5 shadow-lg transition-transform hover:scale-105 top-user-silver">
-                    <i class="fas fa-medal text-gray-100 text-4xl"></i>
-                    <h2 class="text-xl font-bold mt-3 text-black"><%= top3Users[1].username %></h2>
-                    <p class="text-lg text-white">Level: <%= top3Users[1].maxLevel %></p>
-                </div>
-                
-                <div class="flex flex-col items-center rounded-lg p-4 shadow-lg transition-transform hover:scale-105 top-user-bronze">
-                    <i class="fas fa-medal text-orange-200 text-3xl"></i>
-                    <h2 class="text-lg font-bold mt-2 text-black"><%= top3Users[2].username %></h2>
-                    <p class="text-md text-white">Level: <%= top3Users[2].maxLevel %></p>
-                </div>
-            </div>
-
-            <!-- Search & User List -->
-            <div class="mb-6">
-                <div class="relative flex items-center mb-4">
-                    <i class="fas fa-search text-gray-500 absolute ml-3"></i>
-                    <input type="text" id="searchInput" class="w-full pl-10 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-400" placeholder="Search for usernames..." onkeyup="filterUsers()">
-                </div>
-                <div id="noUserMessage" class="text-red-500 text-center hidden mb-6">No existing player with this name.</div>
-                <ul id="userList" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <% const colors = ['bg-red-500', 'bg-green-500', 'bg-blue-500', 'bg-purple-500', 'bg-pink-500', 'bg-orange-400']; %>
-                    <% const remainingUsers = users.slice(3); %>
-                    <% remainingUsers.forEach((user, index) => { %>
-                        <li onclick="location.href='/history?user=<%= encodeURIComponent(user.username) %>'" 
-                            class="hover:bg-indigo-100 p-4 rounded-lg shadow-md flex justify-between items-center transition-all cursor-pointer <%= colors[index % colors.length] %>">
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-user text-white text-2xl"></i>
-                                <span class="text-lg font-semibold text-white"><%= user.username %></span>
-                            </div>
-                            <span class="text-lg font-bold text-white"><%= user.maxLevel %></span>
-                        </li>
-                    <% }) %>
-                </ul>
-            </div>
+    <div class="users">
+       
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search for usernames..." onkeyup="filterUsers()">
         </div>
+
+        <div id="noUserMessage" style="display: none; margin-bottom: 20px; color: #e74c3c;">No existing player with this name.</div>
+
+        <ul id="userList">
+            <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
+            <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %>
+            <% users.forEach((user, index) => { 
+                const color = colors[index % colors.length];
+                const isTopUser = user.username === topUser.username;
+            %>
+            <li onclick="location.href='/history?user=<%= encodeURIComponent(user.username) %>'" style="background-color: <%= isTopUser ? 'gold' : color %>;">
+                <i class="fas fa-user"></i> 
+                <span><%= user.username %></span> 
+                <span style="margin-left: auto; color: #000000;"><%= user.maxLevel %></span>
+                <% if (isTopUser) { %>
+                <i class="fas fa-medal"></i>
+                <% } %>
+            </li>
+            <% }) %>
+        </ul>
     </div>
 
     <script>
@@ -88,6 +63,7 @@
         const userList = document.getElementById('userList');
         const noUserMessage = document.getElementById('noUserMessage');
 
+        // Show or hide the back-to-top button
         window.onscroll = function() {
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 backToTopButton.classList.add('show');
@@ -96,26 +72,29 @@
             }
         };
 
+        // Scroll to the top of the page
         backToTopButton.addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
+        // Function to filter users based on input
         function filterUsers() {
             const input = document.getElementById('searchInput');
             const filter = input.value.toLowerCase();
             const li = userList.getElementsByTagName('li');
-            let foundUser = false;
+            let foundUser = false; // Track if any user was found
 
             for (let i = 0; i < li.length; i++) {
                 const txtValue = li[i].textContent || li[i].innerText;
                 if (txtValue.toLowerCase().indexOf(filter) > -1) {
                     li[i].style.display = "";
-                    foundUser = true;
+                    foundUser = true; // Set foundUser to true if a match is found
                 } else {
                     li[i].style.display = "none";
                 }
             }
 
+            // Show or hide the "no user" message
             noUserMessage.style.display = foundUser ? "none" : "block";
         }
     </script>
