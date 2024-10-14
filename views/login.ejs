@@ -197,6 +197,7 @@
   <body>
     <div class="container">
       <h1>
+        <!-- Title and Logo -->
         <img
           style="
             width: 100px;
@@ -208,7 +209,9 @@
           src="./logo.png"
         />Simon Says Game
       </h1>
+      <!-- Login Form -->
       <form action="/login" method="POST">
+        <!-- Input textfield for username -->
         <input
           type="text"
           id="username"
@@ -217,12 +220,14 @@
           required
         />
         <br />
+        <!-- Submit button with an SVG icon -->
         <button
           type="submit"
           style="justify-content: center; align-items: center"
         >
           <div class="svg-wrapper-1">
             <div class="svg-wrapper">
+              <!-- SVG element-->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -237,6 +242,7 @@
               </svg>
             </div>
           </div>
+          <!-- Add the text "Play" next to the icon -->
           <span>Play</span>
         </button>
       </form>
@@ -255,7 +261,7 @@
 
     <script>
         const colors = ["#e74c3c", "#f1c40f", "#2ecc71", "#fff", "#9b59b6"];
-  
+        //Create ball function
         function createBall() {
           const ball = document.createElement("div");
           const size = Math.random() * 40 + 20;
@@ -269,7 +275,7 @@
           ball.style.position = "absolute";
           ball.style.zIndex = "0";
           ball.style.animation = `fall ${Math.random() * 2 + 3}s linear forwards`;
-  
+          // Set logo or random color for the ball
           if (isLogo) {
             ball.style.backgroundImage = "url('/logo.png')";
             ball.style.backgroundSize = "contain";
@@ -281,12 +287,12 @@
           }
   
           document.body.appendChild(ball);
-  
+          // Add an event listener to the ball to remove it when the animation is finished
           ball.addEventListener("animationend", () => {
             ball.remove();
           });
         }
-  
+        // Set interval to create a new ball every 200ms
         setInterval(createBall, 200);
       </script>
   </body>
