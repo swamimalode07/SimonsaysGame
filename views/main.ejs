@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styletwo.css">
     <link rel="icon" href="/logo.png" type="image/png">
     <style>
-        /* Styling for the timer container */
+        
         #timerContainer {
             display: flex;
             align-items: center;
@@ -15,9 +15,44 @@
         }
 
         #timerIcon {
-            width: 20px; /* Adjust the size as needed */
+            width: 20px;
             height: 20px;
         }
+
+       
+        #howToPlayPopup {
+            display: none; 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+       
+        #popupOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 5;
+        }
+
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+            color: red;
+        }
+
     </style>
 </head>
 <body>
@@ -26,7 +61,7 @@
         <h1>Welcome, <%= query.username %>!</h1>
         <h1>Simon Says Game</h1>
         <h2>Press any key to start the Game</h2>
-        <!-- Timer container with icon -->
+       
         <div id="timerContainer">
             <img id="timerIcon" src="https://img.icons8.com/?size=100&id=RZUWLI9aYLdc&format=png&color=000000" alt="Timer Icon">
             <h2 id="timerDisplay">Time: 0s</h2>
@@ -48,28 +83,38 @@
         <button class="how-to-play-btn" id="howToPlayBtn">How to Play</button>
         <button class="toggle-button" id="leaderboardBtn">View Leaderboard</button>
     </div>
+
+    <div id="popupOverlay"></div>
+    <div id="howToPlayPopup">
+        <span class="close-btn" id="closePopup">&times;</span>
+        <h3>How to Play</h3>
+        <p>1. Memorize the sequence of flashes.<br>
+           2. Click the buttons in the same order.<br>
+           3. Complete each level to progress!<br>
+           4. Game over if you miss the sequence.
+        </p>
+    </div>
     
     <script>
         const username = "<%= query.username %>";
         const url = '/leaderboard?username=' + encodeURIComponent(username);
 
-        function levelCompleted(currentLevel) {
-            fetch('/update-level', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `username=${encodeURIComponent(username)}&currentLevel=${encodeURIComponent(currentLevel)}`
-            })
-            .then(response => response.text())
-            .then(() => {
-                window.location.href = url;
-            })
-            .catch(error => {
-                console.error('Error updating level:', error);
-            });
+        function showPopup() {
+            document.getElementById("howToPlayPopup").style.display = 'block';
+            document.getElementById("popupOverlay").style.display = 'block';
         }
 
+        
+        function hidePopup() {
+            document.getElementById("howToPlayPopup").style.display = 'none';
+            document.getElementById("popupOverlay").style.display = 'none';
+        }
+
+        document.getElementById("howToPlayBtn").addEventListener("click", showPopup);
+        document.getElementById("closePopup").addEventListener("click", hidePopup);
+        document.getElementById("popupOverlay").addEventListener("click", hidePopup);
+
+       
         let userSeq = [];
         let gameSeq = [];
         let h2 = document.querySelector("h2");
@@ -87,7 +132,7 @@
                 document.getElementById("timerDisplay").innerText = `Time: ${seconds}s`;
             }, 1000);
         }
-        //Removing hover over effects before starting the game and disabling the buttons
+
         btns.forEach(btn => {
             document.getElementById(btn).classList.add("not-Active")
             document.getElementById(btn).disabled = true;
@@ -105,7 +150,6 @@
                 levelUp();
                 startTimer();
 
-                 //Adding back the hover over effects after starting the game and enabling the buttons
                  btns.forEach(btn => {
                     document.getElementById(btn).classList.remove("not-Active")
                     document.getElementById(btn).disabled = false;
@@ -187,10 +231,6 @@
             endTimer();
             document.getElementById("timerDisplay").innerText = `Time: 0s`;
         }
-
-        document.getElementById("howToPlayBtn").addEventListener("click", function() {
-            alert("How to Play:\n1. Memorize the sequence of flashes.\n2. Click the buttons in the same order.\n3. Complete each level to progress!\n4. Game over if you miss the sequence.");
-        });
     </script>
 </body>
 </html>
