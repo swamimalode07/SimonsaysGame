@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simon Says</title>
+    <link rel="icon" href="/logo.png" type="image/png" />
+
+    <style>
+      /* Global Styles */
+      html,
+      body {
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #0d47a1, #42a5f5);
+        font-family: "Arial", sans-serif;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Container Styling with Glassy Metal Effect */
+      .container {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.15); /* Glass effect */
+        backdrop-filter: blur(10px); /* Background blur */
+        border-radius: 15px;
+        box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.3); /* Soft shadow */
+        padding: 30px;
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+        z-index: 1;
+        border: 1px solid rgba(255, 255, 255, 0.2); /* Metallic border */
+      }
+
+      /* Title Styles */
+      h1 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        color: #fff;
+        text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+        letter-spacing: 2px;
+      }
+
+      /* Input Field Styles */
+      input[type="text"] {
+        padding: 12px;
+        width: 80%;
+        border: none;
+        border-radius: 25px;
+        background-color: rgba(255, 255, 255, 0.2); /* Light transparency */
+        color: #fff;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        font-size: 1.2em;
+        margin-bottom: 20px;
+        outline: none;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+      }
+
+      input[type="text"]::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      input[type="text"]:focus {
+        background-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0px 0px 15px rgba(0, 191, 255, 0.8);
+      }
+
+      /* Play Button Styling */
+      button {
+        font-family: inherit;
+        font-size: 20px;
+        background: royalblue;
+        color: white;
+        padding: 0.7em 1em;
+        padding-left: 0.9em;
+        display: flex;
+        align-items: center;
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.2s;
+        cursor: pointer;
+        margin-left: 35%;
+      }
+
+      button span {
+        display: block;
+        margin-left: 0.3em;
+        transition: all 0.3s ease-in-out;
+      }
+
+      button svg {
+        display: block;
+        transform-origin: center center;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      button:hover .svg-wrapper {
+        animation: fly-1 0.6s ease-in-out infinite alternate;
+      }
+
+      button:hover svg {
+        transform: translateX(1.2em) rotate(45deg) scale(1.1);
+      }
+
+      button:hover span {
+        transform: translateX(5em);
+      }
+
+      button:active {
+        transform: scale(0.95);
+      }
+
+      @keyframes fly-1 {
+        from {
+          transform: translateY(0.1em);
+        }
+
+        to {
+          transform: translateY(-0.1em);
+        }
+      }
+
+      /* Footer Styling */
+      footer {
+        margin-top: 20px;
+      }
+
+      footer p {
+        font-size: 0.9em;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      footer a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Falling Balls */
+      .ball {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.7;
+        z-index: 0;
+      }
+
+      @keyframes fall {
+        0% {
+          transform: translateY(-100px);
+        }
+        100% {
+          transform: translateY(100vh);
+        }
+      }
+
+      /* Responsive Styling */
+      @media (max-width: 600px) {
+        .container {
+          padding: 20px;
+          width: 90%;
+          max-width: 280px;
+        }
+
+        h1 {
+          font-size: 1.8em;
+        }
+
+        input[type="text"] {
+          font-size: 1em;
+          padding: 10px;
+        }
+
+        .play-btn {
+          font-size: 1em;
+          padding: 12px 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        <img
+          style="
+            width: 100px;
+            height: auto;
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 35%;
+          "
+          src="./logo.png"
+        />Simon Says Game
+      </h1>
+      <form action="/" method="POST">
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username"
+          required
+        />
+        <br />
+        <input
+          type="text"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+        <br />
+        <button
+          type="submit"
+          style="justify-content: center; align-items: center"
+        >
+          <div class="svg-wrapper-1">
+            <div class="svg-wrapper">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+              >
+                <path fill="none" d="M0 0h24v24H0z"></path>
+                <path
+                  fill="currentColor"
+                  d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <span>Register</span>
+        </button>
+      </form>
+      <footer>
+        <p>&copy; 2024 Simon Game. All rights reserved.</p>
+        <p>
+          Game by
+          <strong
+            ><a href="https://swamimalodeportfolio.vercel.app/"
+              >Swami Malode</a
+            ></strong
+          >
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      const colors = ["#e74c3c", "#f1c40f", "#2ecc71", "#fff", "#9b59b6"];
+
+      function createBall() {
+        const ball = document.createElement("div");
+        const size = Math.random() * 40 + 20;
+        const isLogo = Math.random() > 0.9;
+
+        ball.classList.add("ball");
+        ball.style.width = `${size}px`;
+        ball.style.height = `${size}px`;
+        ball.style.left = `${Math.random() * 100}vw`;
+        ball.style.borderRadius = "50%";
+        ball.style.position = "absolute";
+        ball.style.zIndex = "0";
+        ball.style.animation = `fall ${Math.random() * 2 + 3}s linear forwards`;
+
+        if (isLogo) {
+          ball.style.backgroundImage = "url('/logo.png')";
+          ball.style.backgroundSize = "contain";
+          ball.style.backgroundRepeat = "no-repeat";
+          ball.style.backgroundPosition = "center";
+        } else {
+          ball.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        document.body.appendChild(ball);
+
+        ball.addEventListener("animationend", () => {
+          ball.remove();
+        });
+      }
+
+      setInterval(createBall, 200);
+    </script>
+  </body>
+</html>
