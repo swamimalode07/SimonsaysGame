@@ -6,6 +6,7 @@
     <title>Leaderboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="/logo.png" type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
 
     <style>
         html, body {
@@ -17,6 +18,7 @@
         .nav {
             margin-top: 0;
             position: fixed;
+            justify-content: center;
             width: 100%;
             top: 0;
             background-color: #4a90e2;
@@ -27,8 +29,8 @@
         .nav-content {
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             padding: 1rem;
             gap: 16px;
         }
@@ -122,50 +124,48 @@
 
         /* Back to top button */
         #btn-back-to-top {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: none; /* Initially hidden */
-    width: 60px;  
-    height: 60px; 
-    border-radius: 50%; 
-    background-color: #4a90e2; 
-    color: white; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-    border: none; 
-    cursor: pointer; 
-    transition: background-color 0.3s, box-shadow 0.3s, transform 0.5s; /* Added transform for smooth effect */
-}
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none; /* Initially hidden */
+            width: 60px;  
+            height: 60px; 
+            border-radius: 50%; 
+            background-color: #4a90e2; 
+            color: white; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+            border: none; 
+            cursor: pointer; 
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.5s; /* Added transform for smooth effect */
+        }
 
-/* Arrow animation */
-@keyframes moveUp {
-    0% {
-        transform: translateY(20px); /* Start below */
-        opacity: 0; /* Start invisible */
-    }
-    100% {
-        transform: translateY(0); /* Move to original position */
-        opacity: 1; /* Fully visible */
-    }
-}
+        /* Arrow animation */
+        @keyframes moveUp {
+            0% {
+                transform: translateY(20px); /* Start below */
+                opacity: 0; /* Start invisible */
+            }
+            100% {
+                transform: translateY(0); /* Move to original position */
+                opacity: 1; /* Fully visible */
+            }
+        }
 
-/* Show the button with animation */
-#btn-back-to-top.show {
-    display: block; /* Change display to block when class is added */
-    animation: moveUp 0.5s ease-out forwards; /* Animation for appearing */
-}
+        /* Show the button with animation */
+        #btn-back-to-top.show {
+            display: block; /* Change display to block when class is added */
+            animation: moveUp 0.5s ease-out forwards; /* Animation for appearing */
+        }
 
-#btn-back-to-top:hover {
-    background-color: #4a90e2; 
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); 
-    transform: scale(1.1); /* Scale up slightly on hover for effect */
-}
+        #btn-back-to-top:hover {
+            background-color: #4a90e2; 
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); 
+            transform: scale(1.1); /* Scale up slightly on hover for effect */
+        }
 
-#btn-back-to-top i {
-    font-size: 24px; 
-}
-
-
+        #btn-back-to-top i {
+            font-size: 24px; 
+        }
 
         @media (max-width: 768px) {
             h1 {
@@ -204,6 +204,45 @@
                 gap: 10px;
             }
         }
+
+        /* Pagination styles */
+        /* .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination span {
+            align-self: center;
+            margin: 0 10px;
+        } */
+
+         /* Pagination styles */
+         .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: #3498db;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #3498db;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination a.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .pagination a:hover {
+            background-color: #2980b9;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -219,51 +258,110 @@
             <button class="play-again-btn" id="playAgainBtn" onclick="window.location.href='<%= url %>'">Play again</button>
         </div>
     </nav>    
+
     <div class="users">
-        <ul>
-            <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
-            <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %>
-            <% users.forEach((user, index) => { 
-                const color = colors[index % colors.length];
-                const isTopUser = user.username === topUser.username;
-            %>
-            <li onclick="location.href='/history?user=<%= encodeURIComponent(user.username) %>';" class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
-                <i class="fas fa-user"></i> 
-                <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
-                <% if (isTopUser) { %>
-                    <i class="fas fa-medal"></i>
-                <% } %>
-            </li>
-            <% }); %>
+        <ul id="user-list">
+            <% if (users.length === 0) { %>
+                <li>No users available</li>
+            <% } else { %>
+                <% const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f29143']; %>
+                <% let topUser = users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev); %>
+                <% users.forEach((user, index) => { 
+                    const color = colors[index % colors.length];
+                    const isTopUser = user.username === topUser.username;
+                %>
+                <li class="<%= isTopUser ? 'top-user' : '' %>" style="background-color: <%= !isTopUser ? color : '' %>;">
+                    <i class="fas fa-user"></i> 
+                    <span><%= user.username %></span> - Highest Level: <span><%= user.maxLevel %></span>
+                    <% if (isTopUser) { %>
+                        <i class="fas fa-medal"></i>
+                    <% } %>
+                </li>
+                <% }); %>
+            <% } %>
         </ul>
     </div>
 
+    <div class="pagination" id="pagination-controls">
+        <button id="prevBtn" class="btn btn-primary" disabled>Previous</button>
+        <span id="page-info"></span>
+        <button id="nextBtn" class="btn btn-primary">Next</button>
+    </div>
+
     <script>
-        // Get the button
-        // Get the button
-let mybutton = document.getElementById("btn-back-to-top");
+        const users = <%- JSON.stringify(users) %>; // Pass users from the backend to the frontend
+        const limit = 5; // Number of users per page
+        let currentPage = 1; // Track the current page
 
-// When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function () {
-    scrollFunction();
-};
+        function renderPagination() {
+            const paginationControls = document.getElementById('pagination-controls');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageInfo = document.getElementById('page-info');
 
-function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        mybutton.classList.add("show"); // Add the class to show the button with animation
-    } else {
-        mybutton.classList.remove("show"); // Remove the class to hide the button
-    }
-}
+            const totalPages = Math.ceil(users.length / limit);
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
 
-// When the user clicks on the button, scroll to the top of the document
-mybutton.addEventListener("click", backToTop);
+            prevBtn.disabled = currentPage === 1; // Disable prev button on first page
+            nextBtn.disabled = currentPage === totalPages; // Disable next button on last page
 
-function backToTop() {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
-}
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--; // Go to previous page
+                    renderUsers();
+                    renderPagination();
+                }
+            };
 
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++; // Go to next page
+                    renderUsers();
+                    renderPagination();
+                }
+            };
+        }
+
+        function renderUsers() {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = ''; // Clear previous user list
+
+            const start = (currentPage - 1) * limit; // Calculate start index
+            const end = Math.min(start + limit, users.length); // Calculate end index
+
+            for (let i = start; i < end; i++) {
+                const user = users[i];
+                const isTopUser = user.username === users.reduce((prev, current) => (current.maxLevel > prev.maxLevel) ? current : prev).username;
+                const li = document.createElement('li');
+                li.className = isTopUser ? 'top-user' : '';
+                li.style.backgroundColor = !isTopUser ? ['#e74c3c', '#3498db', '#2ecc71', '#f29143'][i % 4] : '';
+                li.innerHTML = `<i class="fas fa-user"></i> 
+                    <span>${user.username}</span> - Highest Level: <span>${user.maxLevel}</span>
+                    ${isTopUser ? '<i class="fas fa-medal"></i>' : ''}`;
+                userList.appendChild(li);
+            }
+        }
+
+        // Initialize the leaderboard
+        renderUsers();
+        renderPagination();
+
+        // Back to top button functionality
+        const backToTopButton = document.getElementById("btn-back-to-top");
+        window.onscroll = function () {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                backToTopButton.classList.add("show");
+            } else {
+                backToTopButton.classList.remove("show");
+            }
+        };
+
+        backToTopButton.onclick = function () {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        };
     </script>
 </body>
 </html>
