@@ -99,7 +99,7 @@
     </div>
     <script>
         const colors = ["#e74c3c", "#f1c40f", "#2ecc71", "#fff", "#9b59b6"];
-
+        // Function to create a ball
         function createBall() {
             const ball = document.createElement("div");
             const size = Math.random() * 40 + 20;
@@ -113,7 +113,7 @@
             ball.style.position = "absolute";
             ball.style.zIndex = "0";
             ball.style.animation = `fall ${Math.random() * 2 + 3}s linear forwards`;
-
+            // Set logo or random color for the ball
             if (isLogo) {
                 ball.style.backgroundImage = "url('/logo.png')";
                 ball.style.backgroundSize = "contain";
@@ -125,12 +125,12 @@
             }
 
             document.body.appendChild(ball);
-
+            // Add an event listener to the ball to remove it when the animation is finished
             ball.addEventListener("animationend", () => {
                 ball.remove();
             });
         }
-
+        // Set interval to create a new ball every 200ms
         setInterval(createBall, 200);
     </script>
 </body>
